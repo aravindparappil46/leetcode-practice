@@ -1,2 +1,2 @@
 # leetcode-practice
-Python file containing attempts at leetcode problems
+Iterative python file containing some of the leetcode problems I attempted.
