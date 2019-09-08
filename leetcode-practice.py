@@ -355,7 +355,7 @@ def removeDup(a):
 a = [1,1,2,1,1,1,2,3,4,4,4,4,4,4]
 #removeDup(a)
 
-# Remove duplicates unneccesary complications :P
+# Remove duplicates unnecessary complications :P
 def removeDup2(a):
     new = []    
     for i in range(len(a)):
@@ -365,4 +365,83 @@ def removeDup2(a):
     return new
 
 #print(removeDup2(a))
+
+
+# Palindrome Partitioning
+# Find all substrings and remove non palindromes
+def partition(s:str):
+    perms = []
+    for i in range(len(s)):
+        for end in range(i+1, len(s)+1):
+            substring_to_check = s[i: end]
+            if palindrome(substring_to_check):
+                if substring_to_check not in perms:
+                    perms.append(substring_to_check)
+
+    print(perms)
+
+def palindrome(s):
+    return True if s == s[len(s)::-1] else False
+     
+#partition('malayalam')
+
+# LRU Cache
+# from collections import defaultdict
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.data = defaultdict(list)
+        self.max_cap = capacity
+
+    def get(self, key: int) -> int:
+        try:
+            if key not in self.data.keys():
+                return -1
+            self.data[key][1] += 1
+            return self.data[key][0]
+        except Exception as e:
+            print(e)
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        key_to_replace = self.check_and_replace()
+        if key_to_replace is not None:
+            del self.data[key_to_replace] 
+        self.data[key] = [value, 1]
+
+    def check_and_replace(self):
+        if len(self.data) >= self.max_cap:
+            least_count_so_far = list(self.data.values())[0][1]
+            key_to_replace = list(self.data.keys())[0]
+            for k,v in self.data.items():
+                if v[1] < least_count_so_far:
+                    least_count_so_far = v[1]
+                    key_to_replace = k
+            return key_to_replace
+
+        else:
+            return None
+
+# new1 = LRUCache(2)
+# print(new1)
+# print(new1.put(1,1))
+# print(new1.put(2,2))
+# print(new1.get(1))
+# print(new1.put(3,3))
+# print(new1.get(2))
+# print(new1.put(4,4))
+# print(new1.data)
+# print(new1.get(1))
+# print(new1.get(3))
+# print(new1.get(4))
+
+
+
+    
+
+
+
+
+
+
     
