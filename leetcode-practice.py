@@ -435,13 +435,195 @@ class LRUCache:
 # print(new1.get(3))
 # print(new1.get(4))
 
+# Reverse words in string
+# hello world --> world hello
+# Remove multiple spaces
+
+def reverseWords(s):
+    s = re.sub(' +', ' ', s).strip()
+    arr = s.split(' ')
+    for word in arr[::-1]:
+        print(word, end=" ")
+
+#reverseWords('  hello    world!   s')
+
+# Bloomberg questions
+"""
+1. Comma formatting 104450 -> 104,450
+100000 -> 10,00,000 and 1,000,000
+
+2. Given integer, # ways it can be represented as sum of 1s and 2s
+3. Reverse sentence in place
+4. Given array of ints and an int, find avg. of m groups in O(n)
+5. Given sorted array, find first occurrence of given number
+6. Brackets matching
+7. Given 2 strings, find missing string ("This is bad", "is bad" => This)
+8. Given pair of ranges, merge overlapping pairs
+9. LCA in BST. Function takes two node ptrs
+10. Sum of nums represented as LLs
+11. Given stream of nums & terminator, return first unique # till terminator
+12. Run length encoding. aaaaabb -> a5b2
+13. Given binary tree, test whether BST
+14. Move all zeroes to end of array
+15. Longest substring with unique characters O(n)
+16. All nodes matching given value in a tree
+17. All prime numbers in a range
+18. Freq of occurrence of words in array, sort em. Find top k elements (heap)
+19. Print level at which node is in a binary tree
+20. Iterative fibonacci
+21. Find anagrams from array of strings
+22. Flatten singly LL
+23. Three Sum
+24. Given string, insert spaces after words, given dict of valid words
+"""
+
+# 1. Comma formatting -Indian and US
+from collections import deque
+def comma(n, locale):
+    stack = deque()
+    result = ''
+
+    for digit in str(n):
+        stack.append(digit)
+
+    if locale == 'IN':
+        for i in range(len(stack)):
+            if i % 2 != 0 and i != 1:
+                result += ','
+            result += stack.pop()
+
+    elif locale == 'US':
+        for i in range(len(stack)):
+            if i % 3 == 0 and i != 0:
+                result += ','
+            result += stack.pop()
+
+    print(result[::-1])
+
+n = 177777789
+#comma(n, 'IN')
 
 
-    
+# 2. No. of ways integer can be represented as sum of 1s and 2s
+#
+# Answer will be the n+1 Fibonacci number
+# DP[n] be num of ways to write N as sum of 1 and 2
+# N = x1 + x2 + x3 + ...+xn
+# If last num is 1, then sum of remaining nums is n-1
+def sumOf1sAnd2s(n):
+    DP = [0 for i in range(0, n + 1)] 
+    # base cases 
+    DP[0] = DP[1] = 1
+  
+    # Iterate for all values from 2 to n 
+    for i in range(2, n + 1): 
+        DP[i] = DP[i - 1] + DP[i - 2]
+      
+    return DP[n] 
+
+# print(sumOf1sAnd2s(5))
 
 
+# 3. Reverse a string in place 
+# Strings are immutable in python. But in C, they are array of chars
 
+def reverseInPlace(s):
+    arr = []
+    arr.extend(s) # ['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o'...]
+    for i in range(0, int(len(arr)/2)):
+        arr[i], arr[len(arr)-i-1] = arr[len(arr)-i-1], arr[i]
+    print(''.join(arr))
 
+#reverseInPlace('hello world') # dlrow olleh 
 
+def reverseInPlace2(s):
+    s = re.sub(' +', ' ', s).strip()
+    return s[::-1]
+#print(reverseInPlace2('hello world')) # dlrow olleh 
 
-    
+def reverseWords2(s):
+     s = re.sub(' +', ' ', s).strip()
+     stack = s.split()
+     for i in range(len(stack)):
+        print(stack.pop(), end=" ")
+
+#reverseWords2('hello world') # world hello
+
+# 4. Given arry of ints and int m, find avg of m groups
+# Maximum avg. sub array
+# Keep another array for cumulative sum
+# Max avg will be sub arry with max sum. Avoids floating pt calcs.
+#
+# Returns start index of subarray
+def avgOfGroups(arr, m):
+    cumulative_sum = [0] * len(arr)
+    cumulative_sum[0] = arr[0]
+
+    if m > len(arr):
+        return -1
+
+    for i in range(1, len(arr)):
+        cumulative_sum[i] = cumulative_sum[i-1] + arr[i]
+
+    # print(arr)
+    print(cumulative_sum)
+    max_so_far = cumulative_sum[0]
+    max_end = 0
+
+    for i in range(m, len(arr)):
+        curr_sum = cumulative_sum[i] - cumulative_sum[i-m]
+        if curr_sum > max_so_far:
+            max_so_far = curr_sum
+            max_end = i
+
+    print('max_end ',max_end)
+    return max_end - m + 1   
+
+arr = [1,2,4,7,1,2,5]
+m = 4
+#print(avgOfGroups(arr, m))
+
+# 5. First occurence of given number in sorted array
+# Binary search modified to go left when match found
+def firstOccurence(arr, t):
+    left = 0
+    right = len(arr) - 1
+    result = 0
+
+    while left <= right:
+        mid = int((left + right) / 2)
+        if arr[mid] < t:
+            left = mid + 1
+        elif arr[mid] > t:
+            right = mid - 1
+        elif arr[mid] == t:
+            result = mid
+            right = mid - 1 # Go left to find any other occurence. Change to left = mid + 1 for last occurence
+
+    return result
+
+arr = [1,2,3,3,4,4,5,5,6,7,8]
+t = 3
+#print(firstOccurence(arr,t))
+
+# 6. Brackets matching - paranthesis matching
+def brackets(s):
+    stack = deque()
+    openings = ['(', '{', '[']
+    for e in s:
+        if e in openings:
+            stack.append(e)
+        else:
+            try:
+                bracket_to_check = stack.pop()
+                if (e == ')' and bracket_to_check != '(') or \
+                   (e == '}' and bracket_to_check != '{') or \
+                   (e == ']' and bracket_to_check != '[') :
+                    return False
+
+            except Exception as e:
+                return False
+    return True
+
+s = '({}[)]'
+print(brackets(s))
