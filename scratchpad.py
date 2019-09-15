@@ -9,5 +9,5 @@ except:
 
 #re.sub(' +',' ',s)
 
-arr = []
-a = arr.pop()
+a = [(6,9), (1,7), (2,5)]
+print(a[-1][1])

@@ -618,12 +618,100 @@ def brackets(s):
                 bracket_to_check = stack.pop()
                 if (e == ')' and bracket_to_check != '(') or \
                    (e == '}' and bracket_to_check != '{') or \
-                   (e == ']' and bracket_to_check != '[') :
+                   (e == ']' and bracket_to_check != '['):
                     return False
 
             except Exception as e:
                 return False
     return True
 
+
 s = '({}[)]'
-print(brackets(s))
+#print(brackets(s))
+
+# 7. Given 2 strings, find missing word
+# Difference between strings
+# Get the longest string and mark all as 1 in a dict
+# Iterate thru shorter string and mark as -1 if present in dict
+# Words without -1 are missing from shorter string
+def missingWord(s1, s2):
+    d = {}
+    s1 = re.sub(' +', ' ', s1).strip()
+    s2 = re.sub(' +', ' ', s2).strip()
+    if len(s1) > len(s2):
+        longest_str = s1
+        second_str = s2
+    else:
+        longest_str = s2
+        second_str = s1
+
+    for words in longest_str.split():
+        d[words] = False
+
+    for check_words in second_str.split():  
+        if not d[check_words]:
+            d[check_words] = True # common in both strs
+    
+    # Uncommon will be False
+    for key, value in d.items():
+        if not value:
+            print(key, end= " ")
+
+s1 = 'this sure is a cat'
+s2 = 'this is'
+#missingWord(s1,s2)
+
+# 8. Merge overlapping ranges intervals
+# Sort by starting time, push to stack, compare with Top-of-stack
+# O(nlogn) considering the sorting. Else O(n)
+def mergeIntervals(arr):
+    stack = deque()
+    arr = sorted(arr, key =lambda a: a[0])
+    stack.append(arr[0])
+
+    for pair in arr:
+        start = pair[0]
+        end = pair[1]
+        tos_end = stack[-1][1]
+        tos_start = stack[-1][0]
+        if tos_end < end and start < tos_end:
+            stack.pop()
+            stack.append((tos_start, end))
+        elif tos_end < start:
+            stack.append(pair)
+
+    for pairs in stack:
+        print(pairs)
+
+arr = [(10,11), (6,9), (1,3), (2,5), (7,8)]
+# mergeIntervals(arr)
+
+# 9. LCA in BST
+# If root is > n1 and n2, go left
+# If root is < n1 and n2, go right
+
+class Node:
+    def __init__(self, v):
+        self.data = v
+        self.left = None
+        self.right = None
+
+def lca(root, n1, n2):
+    if root.data > n1 and root.data > n2:
+        return lca(root.left, n1, n2)
+    elif root.data < n1 and root.data < n2:
+        return lca(root.right, n1, n2)
+    return root
+
+root = Node(20) 
+root.left = Node(8) 
+root.right = Node(22) 
+root.left.left = Node(4) 
+root.left.right = Node(12) 
+root.left.right.left = Node(10) 
+root.left.right.right = Node(14) 
+  
+n1 = 10 ; n2 = 14
+#res = lca(root, n1, n2)
+#print(res.data)
+
