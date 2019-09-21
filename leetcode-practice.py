@@ -823,4 +823,29 @@ root.right = TreeNode(5)
 root.left.left = TreeNode(1) 
 root.left.right = TreeNode(3) 
 
-print(isBST(root))
+#print(isBST(root))
+
+
+# 14. Move all zeroes to end of array
+# count variable keeps track of non-zero nums..swap iterator with count
+# to move non-zeroes ahead
+# Time - O(n)
+# Space - O(1)
+def moveZeroesToEnd(arr):
+    count = 0
+    for i in range(len(arr)):
+        if arr[i] != 0:
+            arr[i], arr[count] = arr[count], arr[i]
+            count+=1
+    return arr
+
+arr = [1, 2, 7, 0, 8, 6, 3, 0, 8, 87, 1, 2, 0, 2, 0, 2, 0, 0]
+print(moveZeroesToEnd(arr))
+
+
+
+
+
+
+
+
