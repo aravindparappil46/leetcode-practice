@@ -8,6 +8,6 @@ except:
 	print('oop')
 
 #re.sub(' +',' ',s)
-
-a = [(6,9), (1,7), (2,5)]
-print(a[-1][1])
+s= 'apple'
+d = { i:0 for i in s }
+print(d)

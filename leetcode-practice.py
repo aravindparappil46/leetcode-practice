@@ -715,3 +715,112 @@ n1 = 10 ; n2 = 14
 #res = lca(root, n1, n2)
 #print(res.data)
 
+
+# 10. Sum of two numbers represented as Linked Lists
+class Node:
+     def __init__(self, x):
+         self.val = x
+         self.next = None
+
+class LLSum:
+    def addTwoNumbers(self,node1, node2):
+        """
+        :type l1: Node
+        :type l2: Node
+        :rtype: Node
+        """
+        return self.convert_node_to_num(node1) + self.convert_node_to_num(node2)
+
+    def convert_node_to_num(self, node):
+        digit = 0 # represent tens, hundreds, thousands
+        num = 0
+        while node is not None:
+            num += node.val * (10 ** digit)
+            digit += 1
+            node = node.next
+        return num
+
+    def convert_num_to_node(self, num):
+        num_str = str(num)
+
+        node_list = []
+        prev_node = None
+        for char in reversed(num_str):
+            node = Node(int(char))
+            node_list.append(node)
+            if prev_node is not None:
+                prev_node.next = node
+            prev_node = node
+            
+        return node_list[0]
+
+if __name__ == '__main__':
+    obj = LLSum()
+    node1 = obj.convert_num_to_node(342)
+    node2 = obj.convert_num_to_node(465)
+    #print(obj.addTwoNumbers(node1, node2))
+
+# 11. Given stream of numbers, find unique numbers till that point
+# Find first non repeating character in stream
+def uniqueInStream(s):
+    inDLL = []* 256
+    repeated = [False] * 256
+    for i in range(len(s)):
+        x = s[i]
+        if not repeated[ord(x)]: # not repeated
+            if x not in inDLL:
+                inDLL.append(x)
+            else: # x already seen...remove it from DLL and mark as repeated
+                inDLL.remove(x)
+                repeated[ord(x)] = True
+        if(len(inDLL) > 0):
+            print('First non repeating char so far: ', inDLL[0])
+
+s = 'thisisthisah'
+#uniqueInStream(s)
+
+# 12. Run length encoding
+def runlengthEncoding(s):
+    d = { i:0 for i in s }
+    output = ''
+    for i in s:
+        d[i] +=1
+    for k,v in d.items():
+        output += k + str(v)
+    return output
+
+s = 'apple'
+#print(runlengthEncoding(s))
+
+# 13. Check if given tree is valid BST
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+def helper(node, min, max):
+    if not node:
+        return True
+
+    if node.val <= min or node.val >= max:
+        return False
+
+    if not helper(node.left, min, node.val):
+        return False
+
+    if not helper(node.right, node.val, max):
+        return False
+
+    return True
+
+def isBST(root):
+    return(helper(root, float('-inf'), float('inf')))
+
+root = TreeNode(4)
+root.left = TreeNode(2) 
+root.right = TreeNode(5) 
+root.left.left = TreeNode(1) 
+root.left.right = TreeNode(3) 
+
+print(isBST(root))
