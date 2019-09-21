@@ -95,11 +95,11 @@ def lengthOfLongestSubstring(s):
         if i - lastRepeating > longestSubstring:
             longestSubstring = i - lastRepeating
             
-        positions [s[i]] = i
+        positions[s[i]] = i
     return longestSubstring
 
     
-#print(lengthOfLongestSubstring("bbbbb"))
+print(lengthOfLongestSubstring("bbbbb"))
 
 # Longest palindromic substring
 def longestPalindrome(s):
@@ -466,8 +466,8 @@ def reverseWords(s):
 13. Given binary tree, test whether BST
 14. Move all zeroes to end of array
 15. Longest substring with unique characters O(n)
-16. All nodes matching given value in a tree
-17. All prime numbers in a range
+16. All nodes matchngeing given value in a tree
+17. All prime numbers in a ra
 18. Freq of occurrence of words in array, sort em. Find top k elements (heap)
 19. Print level at which node is in a binary tree
 20. Iterative fibonacci
@@ -840,12 +840,39 @@ def moveZeroesToEnd(arr):
     return arr
 
 arr = [1, 2, 7, 0, 8, 6, 3, 0, 8, 87, 1, 2, 0, 2, 0, 2, 0, 0]
-print(moveZeroesToEnd(arr))
+#print(moveZeroesToEnd(arr))
 
 
+# 15. Longest substring with unique characters
+# See line 85 for length of longest Unique Substring 
+def longestUniqueSubstring(s):
+    max_len = 0  # max substring len so far 
+    curr_st = 0 # start index of curr substring
+    start = 0
+    d = {} # holds the last repeated index for each char
+    d[s[0]] = 0
 
+    for i in range(1, len(s)):
+        if s[i] not in d: # Char not seen before...add curr index to dict
+            d[s[i]] = i
 
+        else:
+            # check if occurrence is before or after starting of curr substring
+            if d[s[i]] >= curr_st:
+                curr_len = i - curr_st
 
+                if curr_len > max_len:
+                    max_len = curr_len
+                    start = curr_st
+                
+                curr_st = d[s[i]] + 1 # Next substring starts from last occurrence
+            d[s[i]] = i # updating the last occurence of this char
 
+    if i - curr_st > max_len :  # Comparing len of last substring with max so far
+        max_len = i - curr_st
+        start = curr_st
 
+    return s[start : start + max_len]
 
+s = 'apple'
+#print(longestUniqueSubstring(s))
