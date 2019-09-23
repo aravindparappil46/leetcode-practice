@@ -99,7 +99,7 @@ def lengthOfLongestSubstring(s):
     return longestSubstring
 
     
-print(lengthOfLongestSubstring("bbbbb"))
+#print(lengthOfLongestSubstring("bbbbb"))
 
 # Longest palindromic substring
 def longestPalindrome(s):
@@ -876,3 +876,48 @@ def longestUniqueSubstring(s):
 
 s = 'apple'
 #print(longestUniqueSubstring(s))
+
+"""
+input:
+factual-commons => [apache-commons, guava, thrift]
+map-reduce => [apache-commons, hadoop]
+place-attach => [factual-commons, map-reduce]
+hive => [hadoop, apache-commons]
+hive-querier => [hive, factual-commons]
+
+output:
+hive-querier => [hadoop, apache-commons, hive, guava, thrift, factual-commons, hive-querier]
+"""
+deps_dict = {
+    "factual-commons" : ['apache-commons', 'guava', 'thrift'],
+    "map-reduce" : ['apache-commons', 'hadoop'],
+    "place-attach" : ['factual-commons', "map-reduce"],
+    'hive': ['hadoop', 'apache-commons'],
+    'hive-querier': ['hive', 'factual-commons']
+}
+to_build = 'hive-querier'
+
+def minimumDependencies(deps_dict, to_build):
+    built = []
+    for pkg in deps_dict[to_build]:
+        unadded_pkgs = returnNewDeps(pkg, built)
+        if len(unadded_pkgs) > 0:
+            built += [i for i in unadded_pkgs]
+
+    built.append(to_build)
+    print(built)
+
+def returnNewDeps(check, built):
+    new_deps = []
+    
+    if check not in deps_dict:
+        return []
+
+    for i in deps_dict[check]:
+        if i not in built:
+            new_deps.append(i)
+    
+    new_deps.append(check)
+    return new_deps
+
+minimumDependencies(deps_dict, to_build)
