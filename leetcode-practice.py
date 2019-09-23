@@ -466,8 +466,8 @@ def reverseWords(s):
 13. Given binary tree, test whether BST
 14. Move all zeroes to end of array
 15. Longest substring with unique characters O(n)
-16. All nodes matchngeing given value in a tree
-17. All prime numbers in a ra
+16. All nodes matching given value in a tree
+17. All prime numbers in a range
 18. Freq of occurrence of words in array, sort em. Find top k elements (heap)
 19. Print level at which node is in a binary tree
 20. Iterative fibonacci
@@ -916,8 +916,7 @@ def returnNewDeps(check, built):
     for i in deps_dict[check]:
         if i not in built:
             new_deps.append(i)
-    
     new_deps.append(check)
     return new_deps
 
-minimumDependencies(deps_dict, to_build)
+#minimumDependencies(deps_dict, to_build)
