@@ -920,3 +920,27 @@ def returnNewDeps(check, built):
     return new_deps
 
 #minimumDependencies(deps_dict, to_build)
+
+
+# Factual -- time and speed question
+def solution(readings, end_time):
+    # Type your solution here
+    dist_so_far = 0
+    curr_speed = 0
+    last_time = 0
+    for i in range(len(readings)):
+        if len(readings) > 1:
+            time_diff = abs(readings[i+1][0] - readings[i][0]) / 3600
+            curr_speed = readings[i][1]
+            dist_so_far += curr_speed * time_diff
+            last_time = readings[i][0]
+        else:
+            last_time = readings[i][0]
+            curr_speed = readings[i][1]
+
+
+    r = abs((last_time - end_time)) /3600
+    print('real', curr_speed * r)
+
+a = [[0,90],[300,80]]
+
