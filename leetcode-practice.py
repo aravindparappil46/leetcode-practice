@@ -944,3 +944,32 @@ def solution(readings, end_time):
 
 a = [[0,90],[300,80]]
 
+
+# 16. Search for a node in a tree
+
+class Node:
+    def __init__(self, val):
+        self.data = val
+        self.right = None
+        self.left = None
+
+def doesKeyExist(root, key):
+    if root == None:
+        return False
+
+    if root.data == key:
+        return True
+    return doesKeyExist(root.left, key) or doesKeyExist(root.right, key)
+
+root = Node(0)
+root.left = Node(1)  
+root.left.left = Node(3)  
+root.left.left.left = Node(7)  
+root.left.right = Node(4)  
+root.left.right.left = Node(8)  
+root.left.right.right = Node(9)  
+root.right = Node(2)  
+root.right.left = Node(5)  
+root.right.right = Node(6)  
+
+print(doesKeyExist(root, 11))
