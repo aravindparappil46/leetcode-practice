@@ -1,6 +1,5 @@
-import collections
-arr = ['dog', 'apple', 'bat', 'apple', 'cat', 'cat', 'bat', 'apple','cat','apple']
+a = [0,2,5,7,8]
 
-d = collections.Counter(arr)
-a = []
-for k,v in d.items():
+a.pop(a.index(5))
+
+print(a)

@@ -234,6 +234,56 @@ a = [1,2]
 b = [5,6,7]
 #print(mergeSortedArrays(a,b))
 
+# Merge k sorted arrays
+# [[1,2], [55,44,33], [10,11,87]]
+import heapq
+def mergeKSortedArrays(arr):
+    heap = []
+    for array in arr:
+        for element in array:
+            heapq.heappush(heap, element)
+    while len(heap) > 0:
+        print(heapq.heappop(heap))
+
+arr=[[1,2], [33,44,55], [10,11,87]]
+#mergeKSortedArrays(arr)
+
+# Merge K Sorted Arrays in O(n*logk) where n is total num of elements
+# Create a heap
+# First, add 1st elements of all arrays into it
+# Now, popping from heap will give least so far..keep track of the array from which it came from
+# Add this popped val to final result array, as it is the smallest ele so far
+# Remove this popped val from its original array and 
+# push the new top element of THAT array into the heap..Repeat till heap is empty
+#
+#
+# pop and push for minheap - O(logk)
+# Time complexity - O(n*log(k)) where n is total num of elements 
+def mergeKSortedArrays_better(arr):
+    heap = []
+    output = []
+
+    # Using a tuple to keep track of which array the elements belong to
+    for index, array in enumerate(arr):
+        heapq.heappush(heap, (array[0], index)) 
+
+    while len(heap) > 0:
+        smallest = heapq.heappop(heap)
+
+        idx_of_arr_it_came_from = smallest[1] #coz we now need to add to heap from THAT array
+        smallest_value = smallest[0]
+
+        output.append(smallest_value)
+
+        arr[idx_of_arr_it_came_from].pop(arr[idx_of_arr_it_came_from].index(smallest_value))
+
+        if len(arr[idx_of_arr_it_came_from]) > 0:
+            heapq.heappush(heap, (arr[idx_of_arr_it_came_from][0], idx_of_arr_it_came_from))
+
+    print(output)
+
+#mergeKSortedArrays_better(arr)
+
 
 # Remove duplicates from array
 def removeDup(a):
@@ -1025,9 +1075,9 @@ def freqOfWords(arr, k):
     print("Bottom", k, sorted_arr[-k:])
 
 # Using priority queue/heap
-# heapify - O(N log(n)) where N is number of elements in arr
-# heappop/extractMin - O(log n)
-# heappush - O(log n)
+# heapify - O(N log(k)) where N is number of elements in arr
+# heappop/extractMin - O(log k)
+# heappush - O(log k)
 # getMin - O(1) because we do heap[0] and it doesn't pop.
 # 
 # Total time complexity = O(nlogk)
@@ -1091,7 +1141,7 @@ root.right = Node(3)
 root.left.left = Node(4) 
 root.left.right = Node(5) 
 
-print(getLevel(root, 5))
+#print(getLevel(root, 5))
 
 
 # 25: Level order traversal
