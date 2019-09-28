@@ -480,7 +480,7 @@ def reverseWords(s):
 27. All numbers and characters in a string must be sorted and placed on the indexes of char only.  
 28. Deep copy of graph
 29. Deep copy linked list with random and next ptr
-30. Find element inn rotate sorted array
+30. Find element in rotated sorted array
 """
 
 # 1. Comma formatting -Indian and US
@@ -1057,5 +1057,77 @@ def freqOfWordsHeap(arr, k):
     
 arr = ['dog', 'apple', 'bat', 'apple', 'cat', 'cat', 'bat', 'apple','cat','apple']
 #freqOfWords(arr,2)
-freqOfWordsHeap(arr,2)
+#freqOfWordsHeap(arr,2)
+
+# 19. Level at which a node is present in binary tree
+# Level starts at 1...root is at 1
+#
+# Time complexity = O(n) where n is num of nodes in tree
+class Node:
+    def __init__(self, value):
+        self.data = value
+        self.left = None
+        self.right = None
+
+def getLevelHelper(node, key, level):
+    if node is None:
+        return 0
+
+    if node.data == key:
+        return level
+
+    l = getLevelHelper(node.left, key, level + 1)
+    if l != 0: # If 0, then it means we reached a leaf
+        return l
+    else:
+        return getLevelHelper(node.right, key, level+1)
+
+def getLevel(root, key):
+    return getLevelHelper(root, key, 1)
+
+root = Node(1) 
+root.left = Node(2) 
+root.right = Node(3) 
+root.left.left = Node(4) 
+root.left.right = Node(5) 
+
+print(getLevel(root, 5))
+
+
+# 25: Level order traversal
+# Create a queue and push the root
+# Print its value and repeat for left child and right child
+# till queue is empty
+#
+# Time complexity = O(n)
+class Node:
+    def __init__(self, value):
+        self.data = value
+        self.left = None
+        self.right = None
+
+def levelOrderTraversal(root):
+    if root is None:
+        return -1
+
+    queue = []
+    queue.append(root)
+    level = 0
+    while len(queue) > 0:
+        node = queue.pop(0)
+        
+        print(node.data)
+        if node.left is not None:
+            queue.append(node.left)
+        if node.right is not None:
+            queue.append(node.right)
+
+root = Node(1) 
+root.left = Node(2) 
+root.right = Node(3) 
+root.left.left = Node(4) 
+root.left.right = Node(5) 
+
+#levelOrderTraversal(root)
+
 
