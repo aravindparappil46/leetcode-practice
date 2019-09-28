@@ -475,6 +475,12 @@ def reverseWords(s):
 22. Flatten singly LL
 23. Three Sum
 24. Given string, insert spaces after words, given dict of valid words
+25. Level order traversal of binary tree
+26. One edit distance
+27. All numbers and characters in a string must be sorted and placed on the indexes of char only.  
+28. Deep copy of graph
+29. Deep copy linked list with random and next ptr
+30. Find element inn rotate sorted array
 """
 
 # 1. Comma formatting -Indian and US
@@ -972,4 +978,84 @@ root.right = Node(2)
 root.right.left = Node(5)  
 root.right.right = Node(6)  
 
-print(doesKeyExist(root, 11))
+#print(doesKeyExist(root, 11))
+
+
+# 17. Prime numbers within a range
+# Given, start and end - find all primes within those nums
+
+def primeNumbersWithinRange(start, end):
+    primes = []
+    for i in range(start, end):
+        if i == 1:
+            continue
+        if isPrime(i):
+            primes.append(i)
+    return primes
+
+
+def isPrime(n):
+    for i in range(2, n):
+        if n % i == 0:
+            return False
+    return True
+
+#print(primeNumbersWithinRange(10,20))
+
+# 18. Frequency of occurence of words in an array, sort them. Find top k, bottom k
+#
+# O(nlogn) approach
+def freqOfWords(arr, k):
+    d = {}
+    for word in arr:
+        if word in d:
+            d[word] += 1
+        else:
+            d[word] = 1
+
+    #sorting..takes O(nlogn)
+    sorted_arr = []
+    for key, v in sorted(d.items(), key=lambda a: a[1], reverse = True):
+        sorted_arr.append(key)
+
+    print(d)
+
+    # Finding top k and bottom k
+    print("Top", k, sorted_arr[:k])
+    print("Bottom", k, sorted_arr[-k:])
+
+# Using priority queue/heap
+# heapify - O(N log(n)) where N is number of elements in arr
+# heappop/extractMin - O(log n)
+# heappush - O(log n)
+# getMin - O(1) because we do heap[0] and it doesn't pop.
+# 
+# Total time complexity = O(nlogk)
+import heapq
+def freqOfWordsHeap(arr, k):
+    d = {}
+    for word in arr:
+        if word in d:
+            d[word] += 1
+        else:
+            d[word] = 1
+
+    freq_min_heap = []
+    freq_max_heap = []
+    
+    for key,v in d.items():
+        heapq.heappush(freq_min_heap, (v,key))
+        heapq.heappush(freq_max_heap, (-v,key))
+
+    print(n, "least frequently occuring words")
+    for i in range(0, k):
+        print(heapq.heappop(freq_min_heap))
+
+    print(k, "most frequently occuring words")
+    for i in range(0, k):
+        print(heapq.heappop(freq_max_heap))
+    
+arr = ['dog', 'apple', 'bat', 'apple', 'cat', 'cat', 'bat', 'apple','cat','apple']
+#freqOfWords(arr,2)
+freqOfWordsHeap(arr,2)
+
