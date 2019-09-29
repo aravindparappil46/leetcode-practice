@@ -125,26 +125,28 @@ def expandFromCenter(s, start, end):
 
 
 # 3 Sum
-def threeSum(arr):
+def threeSum(arr, t):
     arr.sort()
-    result = []
+    result = set() # not a list, to avoid duplicates
     r = len(arr)-1
     
     for i in range(len(arr)):
         l = i + 1
         while(l < r):
             s = arr[i] + arr[l] + arr[r]
-            if s < 0:
+            if s < t:
                 l += 1
-            if s > 0:
+            if s > t:
                 r -= 1
-            if s == 0:
-                result.append([arr[i], arr[l], arr[r]])
+            if s == t:
+                result.add((arr[i], arr[l], arr[r]))
                 l += 1
                 
     return result
 
-# print(threeSum([-1, 0, 1, 2, -1, -4]))
+arr = [0,8,1,9,22,2]
+# print(threeSum(arr,9))
+# print(threeSum([-1, 0, 1, 2, -1, -4], -3))
 
 
 # Letter combinations of phone dial
@@ -350,24 +352,28 @@ def isSymmetric(l,r):
 # Two Sum
 def twoSum(a, target):
     d = {};
+    o = set()
     for i in range(len(a)):
         compliment = target - a[i]
         if compliment in d:
-            return d[compliment], i
+            o.add(( d[compliment], i ))
         d[a[i]] = i 
-    return None
+    return o
 
 # No dict -- but value not index returned
 def twoSum1(a, target):
+    o = set()
+    d= {}
     for i in range(len(a)):
         compliment = target - a[i]
-        if compliment in a:
-            return compliment, a[i]
+        if compliment in d:
+            o.add(( compliment, a[i] ))
+        d[a[i]] = i
         
-    return None
+    return o
 
-a = [2,1,3,11]
-#print(twoSum(a,14))
+a = [7,8,13,20,12,12,6,1,11]
+# print(twoSum1(a,24))
 
 # max depth of tree
 def maxDepth(node): 
@@ -1250,6 +1256,52 @@ class Node:
         self.prev = None
         self.child = None
 
-def flattenMultiLevel(head):
-    # Hmmmmmmm????????
+# def flattenMultiLevel(head):
+#     # Hmmmmmmm????????
 
+# 23. Three Sum
+def threeSumm(arr,t):
+    arr.sort()
+    out = set()
+    r = len(arr) - 1
+    for i in range(len(arr)):
+        l = i + 1
+        while l < r:
+            s = arr[i] + arr[l] + arr[r]
+            if s < t:
+                l += 1
+            if s > t:
+                r -= 1
+            if s == t:
+                out.add((arr[i], arr[l], arr[r]))
+                l += 1
+
+    if len(out) > 0:
+        return out
+    else:
+        return None
+
+arr = [0,8,1,9,22,2]
+# print(threeSumm(arr,9))
+
+# 24. Given string, insert spaces after words, given dict of valid words
+def insertSpaces(s, validWords):
+    temp = ''
+    result = ''
+    validWords = list(map(lambda x: x.lower(), validWords))
+    for letter in s:
+        temp += letter
+        if temp.lower() in validWords:
+            result = result + temp + ' '
+            temp = ''
+
+    if len(result) > 0:
+        print(result.rstrip())
+    else:
+        print("No valid words found for", s)
+    
+   
+s = 'iiiiiiiii'
+valid = ['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', \
+  'cream', 'icecream', 'man', 'and','go', 'mango']
+insertSpaces(s, valid)
