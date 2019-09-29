@@ -1180,4 +1180,76 @@ root.left.right = Node(5)
 
 #levelOrderTraversal(root)
 
+# 20. Iterative Fibonacci
+# 1,1,2,3,5,8 (first fib num is 1)
+def fibonacci(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        x = 1
+        y = 1
+
+        for i in range(2, n):
+            z = x + y
+            x = y 
+            y = z
+        return y
+
+#print(fibonacci(4))
+
+# 21. Find anagrams from array of strings
+def anagrams(arr):
+    d = defaultdict(list)
+    for word in arr:
+        afterSort = ''.join(sorted(word))
+        if word not in d[afterSort]:
+            d[afterSort].append(word)
+
+    for val in d.values():
+        if len(val) > 1:
+            print(val)
+
+arr = ['tac', 'cat', 'act', 'blaaa','aaalb', 'sow','woe']
+# anagrams(arr)
+
+# 22. Flatten singly linked list
+# 15 -> 20 -> 22 -> 30
+
+class Node:
+    def __init__(self, val):
+        self.data = val
+        self.next = None
+
+def flatten(head):
+    out = []
+    while head.next is not None:
+        out.append(head.data)
+        head = head.next
+
+    out.append(head.data)
+    print(out)
+
+node = Node(5)
+node.next = Node(20)
+node.next.next = Node(100)
+node.next.next.next = Node(9)
+
+#flatten(node)
+
+# 1---2--3---4---5---6--NULL
+#        |
+#        7---8---9---10--NULL
+#            |
+#            11--12--NULL
+
+# 1-2-3-7-8-11-12-9-10-4-5-6-NULL
+class Node:
+    def __init__(self, val):
+        self.data = val
+        self.next = None
+        self.prev = None
+        self.child = None
+
+def flattenMultiLevel(head):
+    # Hmmmmmmm????????
 
