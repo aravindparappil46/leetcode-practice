@@ -1304,4 +1304,30 @@ def insertSpaces(s, validWords):
 s = 'iiiiiiiii'
 valid = ['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', \
   'cream', 'icecream', 'man', 'and','go', 'mango']
-insertSpaces(s, valid)
+# insertSpaces(s, valid)
+
+
+# Clutter
+# p = ["an apple", "apple boy", "apple sux"]
+def generatePhrases(phrases):
+    d = defaultdict(list)
+    all_ending_words = set(map(lambda x:x.split()[-1], phrases))
+    print(all_ending_words)
+    for p in phrases:
+        if p.split()[0] in all_ending_words:
+            d[p.split()[0]].append(p)
+    out = []
+    for p in phrases:
+        starting_word = p.split()[-1]
+        if starting_word in d:
+            for sentence in d[starting_word]:
+                out.append(p +' '+sentence.split(' ',1)[1])
+
+    print(out)
+            
+
+
+
+phrases = ["an apple", "apple boy", "apple sux"]
+generatePhrases(phrases)
+
