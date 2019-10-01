@@ -1309,6 +1309,7 @@ valid = ['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', \
 
 # Clutter
 # p = ["an apple", "apple boy", "apple sux"]
+# output should be ['an apple boy', 'an apple sux']
 def generatePhrases(phrases):
     d = defaultdict(list)
     all_ending_words = set(map(lambda x:x.split()[-1], phrases))
