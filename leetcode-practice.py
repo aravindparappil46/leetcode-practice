@@ -1352,7 +1352,7 @@ def campusBikes(workers, bikes):
                 worker_got_bike[worker_index] = True
                 print("Worker", worker_index, "gets", "Bike", bike_index)
                 out.append(bike_index)
-       
+
     print(out)
 
 def manhattan(w, b):
@@ -1369,24 +1369,26 @@ bikes = [[1,0], [2,2], [2,1]]
 # out shud be 6 (part 2 min dist)
 # campusBikes(workers, bikes)
 
-from itertools import permutations
 # Campus Bikes II - Assign bikes such that total manhattan distance is min
 def campusBikes2(workers, bikes):
-    d = defaultdict()
-    heap = []
-    bike_occupied = [False] * len(bikes)
-    worker_got_bike = [False] * len(workers) 
+    # Hmmmmmmm ????????
+    # heap = []
+    # bike_occupied = [False] * len(bikes)
+    # worker_got_bike = [False] * len(workers) 
+    # num_of_workers = len(workers)
 
-    for worker_index, worker in enumerate(workers):
-        for bike_index, bike in enumerate(bikes):
-            dist = manhattan(worker, bike)
-            d[str(worker_index)+str(bike_index)] = dist
+    # for worker_index, worker in enumerate(workers):
+    #     for bike_index, bike in enumerate(bikes):
+    #         dist = manhattan(worker, bike)
+    #         heapq.heappush( heap, (dist, worker_index, bike_index) )
 
-    print(d)
-
-
+    # print(heap)
 
 
+def isUniqueWorkerAndBike(a, b):
+    if a[0] == b[0] or a[1] == b[1]:
+        return False
+    return True
 
 
 campusBikes2(workers, bikes)
