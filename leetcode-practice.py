@@ -537,6 +537,7 @@ def reverseWords(s):
 28. Deep copy of graph
 29. Deep copy linked list with random and next ptr
 30. Find element in rotated sorted array
+31. Campus bikes
 """
 
 # 1. Comma formatting -Indian and US
@@ -1326,9 +1327,69 @@ def generatePhrases(phrases):
 
     print(out)
             
-
-
-
 phrases = ["an apple", "apple boy", "apple sux"]
-generatePhrases(phrases)
+# generatePhrases(phrases)
+
+
+# 31. Campus bikes I - Assign closest guy to bike
+def campusBikes(workers, bikes):
+    heap = []
+    out = []
+    bike_occupied = [False] * len(bikes)
+    worker_got_bike = [False] * len(workers) 
+
+    for worker_index, worker in enumerate(workers):
+        for bike_index, bike in enumerate(bikes):
+            d = manhattan(worker, bike)
+            heapq.heappush( heap, (d, worker_index, bike_index) )
+
+    while len(heap) > 0:
+        _, worker_index, bike_index = heapq.heappop(heap)
+
+        if not bike_occupied[bike_index]:
+            if not worker_got_bike[worker_index]:
+                bike_occupied[bike_index] = True
+                worker_got_bike[worker_index] = True
+                print("Worker", worker_index, "gets", "Bike", bike_index)
+                out.append(bike_index)
+       
+    print(out)
+
+def manhattan(w, b):
+    return abs(w[0] - b[0]) + abs(w[1] - b[1])
+
+workers = [[0,0], [1,1], [2,0]]
+bikes = [[1,0], [2,2], [2,1]]
+# out shud be [0, 2, 1] (for part 1)
+# out shub be 4
+
+# workers = [[0, 0], [2, 1]]
+# bikes = [[1, 2], [3, 3]]
+# out shub be [1, 0] (for part 1)
+# out shud be 6 (part 2 min dist)
+# campusBikes(workers, bikes)
+
+from itertools import permutations
+# Campus Bikes II - Assign bikes such that total manhattan distance is min
+def campusBikes2(workers, bikes):
+    d = defaultdict()
+    heap = []
+    bike_occupied = [False] * len(bikes)
+    worker_got_bike = [False] * len(workers) 
+
+    for worker_index, worker in enumerate(workers):
+        for bike_index, bike in enumerate(bikes):
+            dist = manhattan(worker, bike)
+            d[str(worker_index)+str(bike_index)] = dist
+
+    print(d)
+
+
+
+
+
+
+campusBikes2(workers, bikes)
+
+
 

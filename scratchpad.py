@@ -4,4 +4,3 @@ print(a)
 
 a = 'aaaav'
 print(a[1:0:-1])
-
