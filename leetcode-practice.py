@@ -528,7 +528,7 @@ def reverseWords(s):
 19. Print level at which node is in a binary tree
 20. Iterative fibonacci
 21. Find anagrams from array of strings
-22. Flatten singly LL
+22. Flatten singly LL (Multilevel LL ??????)
 23. Three Sum
 24. Given string, insert spaces after words, given dict of valid words
 25. Level order traversal of binary tree
@@ -537,7 +537,8 @@ def reverseWords(s):
 28. Deep copy of graph
 29. Deep copy linked list with random and next ptr
 30. Find element in rotated sorted array
-31. Campus bikes
+31. Campus bikes 
+32. Campus bikes II ????????
 """
 
 # 1. Comma formatting -Indian and US
@@ -1369,20 +1370,20 @@ bikes = [[1,0], [2,2], [2,1]]
 # out shud be 6 (part 2 min dist)
 # campusBikes(workers, bikes)
 
-# Campus Bikes II - Assign bikes such that total manhattan distance is min
+# 32. Campus Bikes II - Assign bikes such that total manhattan distance is min
 def campusBikes2(workers, bikes):
     # Hmmmmmmm ????????
-    # heap = []
-    # bike_occupied = [False] * len(bikes)
-    # worker_got_bike = [False] * len(workers) 
-    # num_of_workers = len(workers)
+    heap = []
+    bike_occupied = [False] * len(bikes)
+    worker_got_bike = [False] * len(workers) 
+    num_of_workers = len(workers)
 
-    # for worker_index, worker in enumerate(workers):
-    #     for bike_index, bike in enumerate(bikes):
-    #         dist = manhattan(worker, bike)
-    #         heapq.heappush( heap, (dist, worker_index, bike_index) )
+    for worker_index, worker in enumerate(workers):
+        for bike_index, bike in enumerate(bikes):
+            dist = manhattan(worker, bike)
+            heapq.heappush( heap, (dist, worker_index, bike_index) )
 
-    # print(heap)
+    print(heap)
 
 
 def isUniqueWorkerAndBike(a, b):
@@ -1391,6 +1392,40 @@ def isUniqueWorkerAndBike(a, b):
     return True
 
 # campusBikes2(workers, bikes)
+
+# 30. Search in Rotated sorted array
+# Time complexity O(log n)
+# [0,1,2,4,5,6,7]
+# [4,5,6,7,0,1,2]
+#
+def searchRotatedSortedArray(arr, t):
+    l = 0
+    r = len(arr) - 1
+
+    while l <= r:
+        mid = (l+r) // 2 # instead of r, can do (r-l)
+        if arr[mid] == t:
+            return mid
+
+        if arr[mid] >= arr[l]: # left half is sorted
+            if t < arr[mid] and t >= arr[l]:
+                r = mid -1
+            else:
+                l = mid + 1
+
+        if arr[mid] <= arr[r]: # right half is sorted
+            if t > arr[mid] and t <= arr[r]:
+                l = mid + 1
+            else:
+                r = mid + 1
+
+    return -1
+
+arr = [4,5,6,7,0,1,2]
+print(searchRotatedSortedArray(arr, 2))
+
+
+
 
 
 
