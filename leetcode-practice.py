@@ -1104,7 +1104,7 @@ def freqOfWordsHeap(arr, k):
         heapq.heappush(freq_min_heap, (v,key))
         heapq.heappush(freq_max_heap, (-v,key))
 
-    print(n, "least frequently occuring words")
+    print(k, "least frequently occuring words")
     for i in range(0, k):
         print(heapq.heappop(freq_min_heap))
 
@@ -1390,8 +1390,7 @@ def isUniqueWorkerAndBike(a, b):
         return False
     return True
 
-
-campusBikes2(workers, bikes)
+# campusBikes2(workers, bikes)
 
 
 
