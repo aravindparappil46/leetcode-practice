@@ -1,14 +1,12 @@
 
-
 import heapq
+from collections import defaultdict
+import re
+from collections import deque
 
-h = []
 
-heapq.heappush(h, 2)
-heapq.heappush(h, 1)
-heapq.heappush(h, 99)
+a = [1,2,4,5,6]
 
-h[h.index(2)] = h[-1]
-h.pop()
-heapq.heapify(h)
-print(h)
+
+s = 'BATAT'
+print(s.index('A'))

@@ -96,10 +96,11 @@ def lengthOfLongestSubstring(s):
             longestSubstring = i - lastRepeating
             
         positions[s[i]] = i
+    print(positions)
     return longestSubstring
 
     
-#print(lengthOfLongestSubstring("bbbbb"))
+# print(lengthOfLongestSubstring("bbbbbam"))
 
 # Longest palindromic substring
 def longestPalindrome(s):
@@ -125,6 +126,7 @@ def expandFromCenter(s, start, end):
 
 
 # 3 Sum
+# Time complexity = O(n^2)
 def threeSum(arr, t):
     arr.sort()
     result = set() # not a list, to avoid duplicates
@@ -206,6 +208,7 @@ def romanToInt(s):
 #print(romanToInt("MMMM"))
 
 # Merge two sorted arrays
+# Time complexity = O(n1 + n2) (Space also)
 def mergeSortedArrays(a,b):
     c = [None]*(len(a)+len(b))
     i=0
@@ -330,6 +333,7 @@ def isSameTree(p,q):
     
     return isSameTree(p.right, q.right) and \
            isSameTree(p.left, q.left)
+
 
 # Symmetric tree
 """
@@ -543,6 +547,8 @@ def reverseWords(s):
 """
 
 # 1. Comma formatting -Indian and US
+# Indian - 17,77,77,789
+# US - 177,777,789
 from collections import deque
 def comma(n, locale):
     stack = deque()
@@ -566,7 +572,7 @@ def comma(n, locale):
     print(result[::-1])
 
 n = 177777789
-#comma(n, 'IN')
+# comma(n, 'US')
 
 
 # 2. No. of ways integer can be represented as sum of 1s and 2s
@@ -849,13 +855,13 @@ def runlengthEncoding(s):
     d = { i:0 for i in s }
     output = ''
     for i in s:
-        d[i] +=1
+        d[i] += 1
     for k,v in d.items():
         output += k + str(v)
     return output
 
 s = 'apple'
-#print(runlengthEncoding(s))
+# print(runlengthEncoding(s))
 
 # 13. Check if given tree is valid BST
 class TreeNode:
@@ -905,7 +911,7 @@ def moveZeroesToEnd(arr):
     return arr
 
 arr = [1, 2, 7, 0, 8, 6, 3, 0, 8, 87, 1, 2, 0, 2, 0, 2, 0, 0]
-#print(moveZeroesToEnd(arr))
+# print(moveZeroesToEnd(arr))
 
 
 # 15. Longest substring with unique characters
@@ -1077,8 +1083,8 @@ def freqOfWords(arr, k):
     for key, v in sorted(d.items(), key=lambda a: a[1], reverse = True):
         sorted_arr.append(key)
 
-    print(d)
-
+    # print(d)
+    # print(sorted_arr)
     # Finding top k and bottom k
     print("Top", k, sorted_arr[:k])
     print("Bottom", k, sorted_arr[-k:])
@@ -1102,7 +1108,7 @@ def freqOfWordsHeap(arr, k):
     freq_min_heap = []
     freq_max_heap = []
     
-    for key,v in d.items():
+    for key, v in d.items():
         heapq.heappush(freq_min_heap, (v,key))
         heapq.heappush(freq_max_heap, (-v,key))
 
@@ -1114,8 +1120,8 @@ def freqOfWordsHeap(arr, k):
     for i in range(0, k):
         print(heapq.heappop(freq_max_heap))
     
-arr = ['dog', 'apple', 'bat', 'apple', 'cat', 'cat', 'bat', 'apple','cat','apple']
-#freqOfWords(arr,2)
+arr = ['dog', 'apple', 'bat', 'apple', 'cat', 'cat', 'bat', 'apple','cat','apple','man']
+# freqOfWords(arr,2)
 #freqOfWordsHeap(arr,2)
 
 # 19. Level at which a node is present in binary tree
@@ -1315,7 +1321,7 @@ valid = ['i', 'like', 'sam', 'sung', 'samsung', 'mobile', 'ice', \
 # output should be ['an apple boy', 'an apple sux']
 def generatePhrases(phrases):
     d = defaultdict(list)
-    all_ending_words = set(map(lambda x:x.split()[-1], phrases))
+    all_ending_words = set(map(lambda x: x.split()[-1], phrases))
     print(all_ending_words)
     for p in phrases:
         if p.split()[0] in all_ending_words:
@@ -1443,3 +1449,37 @@ def twoCityScheduling(arr):
 arr = [[10,20],[30,200],[400,50],[30,20]] # out shud be 110
 # twoCityScheduling(arr)
 
+
+# BAAAT => BT
+# AAATmmmA => TA
+# Push first letter to stack
+# Start a loop from second letter till end of string
+# if curr char == top of stack, increment a count and push to stack, 
+# if not, reset count and push to stack
+# if count == 3, pop everything from stack
+# Whatever is remaining in stack is the answer
+def crushConsecutive(st):
+    result = ''
+    stack = []
+    stack.append(s[0])
+    count = 1
+
+    for i in range(1, len(st)):
+        if len(stack) > 0: # this is for when there are 3 consec at the starting itself
+            if st[i] == stack[-1]:
+                count += 1
+                stack.append(st[i])
+
+                if count == 3:
+                    stack = []
+            else:
+                count = 1
+                stack.append(st[i])
+
+        else:
+            stack.append(st[i])
+
+    print(''.join(stack))
+
+s = "aaam"
+crushConsecutive(s)
