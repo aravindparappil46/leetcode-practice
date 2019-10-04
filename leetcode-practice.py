@@ -1462,7 +1462,7 @@ def crushConsecutive(st):
     result = ''
     stack = []
     stack.append(s[0])
-    count = 1
+    count = 1 
 
     for i in range(1, len(st)):
         if len(stack) > 0: # this is for when there are 3 consec at the starting itself
@@ -1470,8 +1470,10 @@ def crushConsecutive(st):
                 count += 1
                 stack.append(st[i])
 
-                if count == 3:
-                    stack = []
+                if count == 3: # this decides how many is the limit
+                    stack.pop()
+                    stack.pop()
+                    stack.pop()
             else:
                 count = 1
                 stack.append(st[i])
@@ -1481,5 +1483,35 @@ def crushConsecutive(st):
 
     print(''.join(stack))
 
-s = "aaam"
-crushConsecutive(s)
+s = "AAATmmmA"
+# crushConsecutive(s)
+
+# Candy Crush
+# Stable means no more candies to crush
+def candyCrush(board):
+
+    while not isStable(board):
+        board = crushHorizontalMatch(board)
+        board = crushVerticalMatch(board)
+
+def isStable(board):
+    R = len(board)
+    C = len(board[0])
+
+    # checking horizontals
+    for r in range(R):
+        for c in range(C-2):
+            if board[r][c] == board[r][c+1] == board[r][c+2]:
+                return False
+
+    # checking verticals
+    for r in range(R-2):
+        for c in range(C):
+            if board[r][c] == board[r+1][c] == board[r+2][c]:
+                return False
+
+    return True
+
+board = [[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]
+
+print(isStable(board))
