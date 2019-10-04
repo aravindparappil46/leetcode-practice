@@ -16,7 +16,7 @@ def atoi(s):
 
     return int(s)
 
-#print(atoi("-1aa3"))
+# print(atoi("-1aa3"))
 
 # Atoi no casting
 def atoi2(s):
@@ -1418,14 +1418,29 @@ def searchRotatedSortedArray(arr, t):
                 l = mid + 1
             else:
                 r = mid + 1
-
     return -1
 
+
 arr = [4,5,6,7,0,1,2]
-print(searchRotatedSortedArray(arr, 2))
+# print(searchRotatedSortedArray(arr, 2))
 
 
 
+# Two city scheduling
+# Sort by priceA - priceB (this is cheapest to send to A)
+# Send first len(arr)/2 ppl to city A and the other arr/2 to city B
+def twoCityScheduling(arr):
+    result = 0
+    sorted_arr = sorted(arr, key=lambda x: x[0] - x[1])
+   
+    for i in sorted_arr[:len(arr)//2]:
+        result += i[0]
 
+    for i in sorted_arr[len(arr)//2:]:
+        result += i[1]
 
+    print(result)
+
+arr = [[10,20],[30,200],[400,50],[30,20]] # out shud be 110
+# twoCityScheduling(arr)
 
