@@ -443,6 +443,7 @@ def palindrome(s):
 
 # LRU Cache
 # from collections import defaultdict
+# I think this is LFU Hmmm????????
 class LRUCache:
 
     def __init__(self, capacity: int):
@@ -1420,10 +1421,8 @@ def searchRotatedSortedArray(arr, t):
                 r = mid + 1
     return -1
 
-
 arr = [4,5,6,7,0,1,2]
 # print(searchRotatedSortedArray(arr, 2))
-
 
 
 # Two city scheduling
