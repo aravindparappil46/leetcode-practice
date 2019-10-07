@@ -533,17 +533,21 @@ def reverseWords(s):
 19. Print level at which node is in a binary tree
 20. Iterative fibonacci
 21. Find anagrams from array of strings
-22. Flatten singly LL (Multilevel LL ??????)
-23. Three Sum
+22. Flatten singly LL (Multilevel LL ??????) <<<IMP
+23. Three Sum <<<IMP
 24. Given string, insert spaces after words, given dict of valid words
 25. Level order traversal of binary tree
 26. One edit distance
 27. All numbers and characters in a string must be sorted and placed on the indexes of char only.  
-28. Deep copy of graph
-29. Deep copy linked list with random and next ptr
-30. Find element in rotated sorted array
+28. Deep copy of graph <<<IMP
+29. Deep copy linked list with random and next ptr <<<IMP
+30. Find element in rotated sorted array <<<IMP
 31. Campus bikes 
 32. Campus bikes II ????????
+33. Find kth largest node in BST <<<IMP
+34. Given a number of children, and a number of turns for each round. Figure out which student wins  <<<IMPT
+35. Best time to sell stocks <<<IMP
+36. LRU Cache <<<IMP
 """
 
 # 1. Comma formatting -Indian and US
@@ -1514,4 +1518,4 @@ def isStable(board):
 
 board = [[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]
 
-print(isStable(board))
+# print(isStable(board))
