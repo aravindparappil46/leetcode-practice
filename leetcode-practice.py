@@ -1514,4 +1514,46 @@ def isStable(board):
 
 board = [[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]
 
-print(isStable(board))
+# print(isStable(board))
+
+def songSelection(arr,k):
+    m = []
+    for i in range(len(arr)):
+        m.append((arr[i], i))
+
+    m.sort(key=lambda x: x[0])
+
+    k -= 30
+    left = 0
+    right = len(arr) - 1
+    pairs = None
+    maxi = 0
+
+    while left < right:
+        local_minutes = m[left][0] + m[right][0]
+        if local_minutes <= k:
+            if local_minutes == k :
+                return [m[left][1], m[right][1]]
+            elif local_minutes > maxi:
+                maxi = local_minutes
+                pairs = [m[left][1], m[right][1]]
+            left += 1
+        else:
+            right -= 1
+    return pairs
+    
+
+
+a = [30,30,40,20]
+t = 90
+# print(songSelection(a,t))
+
+def betterCompression(s):
+    s_inp = re.split("(\d+)", s)
+    d = {}
+    print(s_inp)
+
+
+s = 'a12b56c1'
+betterCompression(s)
+
