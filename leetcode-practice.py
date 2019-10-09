@@ -1552,13 +1552,27 @@ a = [30,30,40,20]
 t = 90
 # print(songSelection(a,t))
 
+
+# a12b56c1a2 ==> a14b56c1
+# Add duplicate letter+count pairs together
 def betterCompression(s):
-    s_inp = re.split("(\d+)", s)
+    segregrate_inp = re.split("(\d+)", s)
     d = {}
-    print(s_inp)
+    res = ''
+    for i in range(len(segregrate_inp)-1):
+        if i % 2 == 0:
+            if segregrate_inp[i] not in d:
+                d[segregrate_inp[i]] = segregrate_inp[i+1]
+            else:
+                d[segregrate_inp[i]] = int(d[segregrate_inp[i]]) + int(segregrate_inp[i+1])
+
+    for k, v in sorted(d.items(), key = lambda x:x[0]):
+        res += k + str(v)
+
+    print(res)
 
 
-s = 'a12b56c1'
+s = 'a12b56c1a2'
 betterCompression(s)
 
 # print(isStable(board))
