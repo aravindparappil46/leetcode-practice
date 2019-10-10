@@ -1492,33 +1492,107 @@ s = "AAATmmmA"
 
 # Candy Crush
 # Stable means no more candies to crush
+
 def candyCrush(board):
-
-    while not isStable(board):
-        board = crushHorizontalMatch(board)
-        board = crushVerticalMatch(board)
-
-def isStable(board):
     R = len(board)
     C = len(board[0])
 
+    while not isStable(board):
+        board = crush(board)
+
+    return board
+       
+# Is the board un-crushable anymore?
+def isStable(board):
+    R = len(board)
+    C = len(board[0])
     # checking horizontals
     for r in range(R):
         for c in range(C-2):
-            if board[r][c] == board[r][c+1] == board[r][c+2]:
+            if (abs(board[r][c]) == abs(board[r][c+1]) == abs(board[r][c+2])) and \
+               (abs(board[r][c]) == abs(board[r][c+1]) == abs(board[r][c+2]) != 0):
                 return False
 
     # checking verticals
     for r in range(R-2):
         for c in range(C):
-            if board[r][c] == board[r+1][c] == board[r+2][c]:
+            if (abs(board[r][c]) == abs(board[r+1][c]) == abs(board[r+2][c])) and \
+               (abs(board[r][c]) == abs(board[r+1][c]) == abs(board[r+2][c])!= 0):
                 return False
 
     return True
 
-board = [[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]
+def shouldGravityBeInvoked(board):
+    R = len(board)
+    C = len(board[0])
+    for r in range(R):
+        for c in range(C):
+            # If there's a 0 in any row other than 1st row
+            if board[r][c] == 0 and r != 0:
+                return True
+    return False
 
-# print(isStable(board))
+# If there's a cell with 0, move down the cell above it
+# Unless we are at the first zero (nothing above it to move down)
+def invokeGravity(b):
+    R = len(b)
+    C = len(b[0])
+    for r in range(R):
+        for c in range(C):
+            if b[r][c] == 0 and r != 0:
+                b[r][c] = b[r-1][c]
+                b[r-1][c] = 0
+    return b
+
+# This sets up the board for gravity to work
+# All the neg values in board indicates equal cells which
+# should be crushed
+def turnNegativesToZeroes(b):
+    R = len(b)
+    C = len(b[0])
+    for r in range(R):
+        for c in range(C):
+            if b[r][c] < 0:
+                b[r][c] = 0
+    return b
+
+# Since both hori and vert crushing should be done SIMULTANEOUSLY,
+# First mark same cells as their negative val and then call gravity()
+# And whenever we are checking for equal cells, use abs() so that we know they are same
+def crush(board):
+    R = len(board)
+    C = len(board[0])
+    # Marking same elements as 0 -- in rows
+    for r in range(R):
+        for c in range(C-2):
+            if abs(board[r][c]) == abs(board[r][c+1]) == abs(board[r][c+2]):
+                board[r][c] = -board[r][c]
+                board[r][c+1] = -board[r][c+1]
+                board[r][c+2] = -board[r][c+2]
+
+    # Marking same elements as 0 -- in cols
+    for r in range(R-2):
+        for c in range(C):
+            if abs(board[r][c]) == abs(board[r+1][c]) == abs(board[r+2][c]):
+                board[r][c] = -board[r][c]
+                board[r+1][c] = -board[r+1][c]
+                board[r+2][c] = -board[r+2][c]
+
+    board = turnNegativesToZeroes(board)
+    print("before gravity ", board)      
+    # Keep dropping the numbers till theres no space to drop anymore
+    while shouldGravityBeInvoked(board):
+        board = invokeGravity(board)
+        print("GRAVITATED>>>>> ",board)
+
+    return board
+            
+# board = [[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]
+# board = [[1,2,4,5],[3,4,5,6],[3,3,3,7],[1,2,3,5]]
+board = [[1,2,3],[1,4,5],[1,1,1]]
+b = [[0,0,0], [1,2,3], [1,4,5]]
+print(candyCrush(board))
+
 
 def songSelection(arr,k):
     m = []
@@ -1573,6 +1647,5 @@ def betterCompression(s):
 
 
 s = 'a12b56c1a2'
-betterCompression(s)
+# betterCompression(s)
 
-# print(isStable(board))
