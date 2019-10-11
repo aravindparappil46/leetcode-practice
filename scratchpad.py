@@ -9,4 +9,4 @@ a = [1,2,4,5,6]
 
 
 s = 'BATAT'
-print(s.index('A'))
+print(s[0:2])
