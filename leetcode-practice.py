@@ -1679,6 +1679,6 @@ def longestPalindromicSubstring(s):
 
     return s[left:right+1]
 
-s = 'banana'
+s = 'abxx'
 print(longestPalindromicSubstring(s))
 
