@@ -1164,11 +1164,11 @@ root.left.right = Node(5)
 #print(getLevel(root, 5))
 
 
-# 25: Level order traversal
+# 25. Level order traversal
 # Create a queue and push the root
 # Print its value and repeat for left child and right child
 # till queue is empty
-#
+# BFS
 # Time complexity = O(n)
 class Node:
     def __init__(self, value):
@@ -1182,7 +1182,6 @@ def levelOrderTraversal(root):
 
     queue = []
     queue.append(root)
-    level = 0
     while len(queue) > 0:
         node = queue.pop(0)
         
@@ -1680,5 +1679,117 @@ def longestPalindromicSubstring(s):
     return s[left:right+1]
 
 s = 'abxx'
-print(longestPalindromicSubstring(s))
+# print(longestPalindromicSubstring(s))
 
+# 25. Level order traversal
+# This prints each level in a separate array
+# BFS
+class Node:
+    def __init__(self, value):
+        self.val = value
+        self.left = None
+        self.right = None
+
+def levelOrderTraversalPerLevel(root):
+    queue = [root]
+    levels = []
+    level = 0
+    if not root:
+        return []
+    
+    while queue:
+        levels.append([])
+        for i in range(len(queue)):
+            root = queue.pop(0)
+            levels[level].append(root.val)
+
+            if root.left:
+                queue.append(root.left)
+            if root.right:
+                queue.append(root.right)
+        level += 1 
+           
+    return levels
+
+
+root = Node(1) 
+root.left = Node(2) 
+root.right = Node(3) 
+root.left.left = Node(4) 
+root.left.right = Node(5) 
+
+# print(levelOrderTraversalPerLevel(root))
+
+# Post order traversal
+# Left Right Root (but reverse it coz stack)
+def postorderTraversal(root):
+    out = []
+    stack = [root]
+    while stack:
+        root = stack.pop()
+        if root:
+            if root.left is not None:
+                stack.append(root.left)
+            if root.right is not None:
+                stack.append(root.right)
+            out.append(root.val)
+            
+    return out[::-1]
+
+# Inorder traversal
+# Left Root Right
+# Use curr to move left and right
+def inorderTraversal(root) -> List[int]:
+    out = []
+    stack = []
+    curr = root
+    while len(stack) > 0 or curr != None:
+        while curr != None:
+            stack.append(curr)
+            curr = curr.left
+            
+        curr = stack.pop()
+        out.append(curr.val)
+        curr = curr.right
+    return out
+
+# Preorder traversal
+# Root left right..but root right left coz stack
+def preorderTraversal(root):
+    out = []
+    stack = []
+    stack.append(root)
+    if not root:
+        return []
+
+    while stack:
+        root = stack.pop()
+        out.append(root.val)
+
+        if root.right is not None:
+            stack.append(root.right)
+                       
+        if root.left is not None:
+            stack.append(root.left)
+    return out
+
+# Depth of a tree
+# Push (root, depth) to stack
+# increment depth as we go to its children, update max_so_far
+def maxDepth(self, root: TreeNode) -> int:
+    if not root:
+        return 0
+    
+    stack = [(root,1)] #depth
+    max_depth = 0
+    while stack:
+        if len(stack)> 0:
+            root, depth = stack.pop()
+            if root.left:
+                stack.append((root.left, depth + 1))
+            if root.right:
+                stack.append((root.right, depth + 1))
+            if depth > max_depth:
+                max_depth = depth
+    return max_depth
+        
