@@ -1797,4 +1797,20 @@ def maxDepth(root):
             if depth > max_depth:
                 max_depth = depth
     return max_depth
-        
+      
+# Path Sum
+# keep decrementing from sum till we reach zero  
+def hasPathSum(root, sum):
+    if not root:
+        return False
+
+    stack = [(root, sum - root.val)]
+    while stack:
+        node, check = stack.pop()
+        if check == 0 and node.left is None and node.right is None:
+            return True
+        if node.left:
+            stack.append((node.left, check - node.left.val))
+        if node.right:
+            stack.append((node.right, check - node.right.val))
+    return False
