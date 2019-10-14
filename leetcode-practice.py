@@ -365,20 +365,25 @@ def twoSum(a, target):
         d[a[i]] = i 
     return o
 
-# No dict -- but value not index returned
+# THIS IS THE RIGHT ANSWER!
 def twoSum1(a, target):
     o = set()
     d= {}
     for i in range(len(a)):
         compliment = target - a[i]
         if compliment in d:
-            o.add(( compliment, a[i] ))
+            temp = [compliment, a[i]]
+            temp.sort()
+            if str(temp) not in o:
+                o.add(str(temp))
         d[a[i]] = i
+    print(d)
         
     return o
 
+a1 = [6,6,3,9,3,5,12]
 a = [7,8,13,20,12,12,6,1,11]
-# print(twoSum1(a,24))
+print(twoSum1(a1,12))
 
 # max depth of tree
 def maxDepth(node): 
@@ -1739,7 +1744,7 @@ def postorderTraversal(root):
 # Inorder traversal
 # Left Root Right
 # Use curr to move left and right
-def inorderTraversal(root) -> List[int]:
+def inorderTraversal(root):
     out = []
     stack = []
     curr = root
@@ -1776,14 +1781,14 @@ def preorderTraversal(root):
 # Depth of a tree
 # Push (root, depth) to stack
 # increment depth as we go to its children, update max_so_far
-def maxDepth(self, root: TreeNode) -> int:
+def maxDepth(root):
     if not root:
         return 0
     
     stack = [(root,1)] #depth
     max_depth = 0
     while stack:
-        if len(stack)> 0:
+        if len(stack) > 0:
             root, depth = stack.pop()
             if root.left:
                 stack.append((root.left, depth + 1))
