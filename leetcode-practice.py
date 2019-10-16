@@ -183,7 +183,7 @@ def recurse(output, combo, digits, phone):
 #letterCombinations('2398')
 
 # Reverse a number
-
+# reverseInteger
 def reverse(x: 'int') -> 'int':
     rev = 0
     while x > 0:
@@ -454,6 +454,7 @@ def palindrome(s):
 # LRU Cache
 # from collections import defaultdict
 # I think this is LFU Hmmm????????
+# least frequently used
 class LRUCache:
 
     def __init__(self, capacity: int):
@@ -1814,3 +1815,163 @@ def hasPathSum(root, sum):
         if node.right:
             stack.append((node.right, check - node.right.val))
     return False
+
+# Populating Next Right pointer in Each Node
+# Binary tree
+
+def populateNextRightPointer(root):
+        if not root:
+            return None
+        
+        queue = [root]
+        o = []
+        levels=[]
+        level = 0
+
+        while queue:
+            levels.append([])
+            
+            for i in range(len(queue)):
+                node = queue.pop(0) 
+                levels[level].append(node)
+                
+                if node.left:
+                    queue.append(node.left)
+                    
+                if node.right:
+                    queue.append(node.right)
+            
+            # One level has been completed. Now, update the next ptrs
+            # of all nodes in this level apart from the last
+            for i in range(len(levels[level])):
+                node = levels[level][i]
+
+                #If last node reached, next ptr is None
+                if i == len(levels[level]) - 1:
+                    node.next = None
+                    break
+                else:
+                    node.next = levels[level][i+1]
+                    
+            level+=1
+        return levels[0][0]
+
+# Lowest Common Ancestor in Binary Tree
+#
+# Create a dictionary of all nodes and their immediate parents
+# Find all ancestors of p
+# Try to find all ancestors of q, but return when u see the first common
+# element with p's ancestors
+def lowestCommonAncestor(root, p, q):
+    stack = [root]
+    d = defaultdict(list)
+    d[root] = None
+    while stack:
+        node = stack.pop()
+        if node.left:
+            stack.append(node.left)
+            d[node.left]= node
+
+        if node.right:
+            stack.append(node.right)
+            d[node.right]= node
+        
+    pAncestors = []
+    while p:
+        pAncestors.append(p)
+        p = d[p]
+    
+    while q:
+        if q in pAncestors:
+            return q
+        q = d[q]
+    
+    return None
+
+# Add two numbers as Linked List
+# Keep a dummy node using deepcopy
+# Any change made to it will reflect in final result
+def addTwoNumbers(l1, l2):
+    result = ListNode(0)
+    dummy = result
+    carry = 0
+    
+    while l1 or l2:
+        curr_sum = l1.val + l2.val + carry
+        carry = int(str(curr_sum)[0]) if len(str(curr_sum)) > 1 else 0
+        actual_val = int(str(curr_sum)[1]) if len(str(curr_sum)) > 1 else curr_sum
+        
+        dummy.next = ListNode(actual_val)
+        dummy = dummy.next
+
+        l1 = l1.next
+        l2 = l2.next
+    # After everything, if there's still a carry, create a node
+    # E.g: 5 + 5 = 10 (1 shud be in a node)
+    if carry > 0:
+        dummy.next = ListNode(carry)
+        
+    return result.next # can't do result coz leading 0
+
+# LRU Cache
+class Node:
+    def __init__(self,k, v):
+        self.key = k
+        self.val = v
+        self.next = None
+        self.prev = None
+        
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.dict = {}
+        self.head = Node(0,0)
+        self.tail = Node(0,0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        
+        
+    def get(self, key: int) -> int:
+        if key not in self.dict:
+            return -1
+        
+        # This node becomes most recently used
+        self.remove(self.dict[key])
+        self.add(self.dict[key])
+        
+        return self.dict[key].val
+            
+        
+    def put(self, key: int, value: int) -> None:
+        if key in self.dict:
+            del self.dict[key]
+            self.remove(self.dict[key])
+        
+        # Capacity exceeded...remove first node (LRU node)
+        # Need to use LRU Node's key while del from dict
+        if len(self.dict) > self.capacity:
+            least_recently_used_node = self.head.next
+            self.remove(least_recently_used_node)
+            del self.dict[least_recently_used_node.key]
+        
+        # Create a new node to add
+        node_to_add = Node(key, value)
+        self.add(node_to_add)
+        self.dict[key] = node_to_add
+        
+            
+    # Always add to the right most area (end)
+    # Most recently used nodes are at the end
+    def add(self, n):
+        curr_last_node = self.tail.prev
+        curr_last_node.next  = n
+        n.next = self.tail
+        self.tail.prev = n
+        n.prev = curr_last_node
+        
+    
+    def remove(self, n):
+        previous_node = n.prev
+        next_node = n.next
+        previous_node.next = next_node
+        next_node.prev = previous_node
