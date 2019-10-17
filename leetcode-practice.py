@@ -101,6 +101,28 @@ def lengthOfLongestSubstring(s):
 
 # print(lengthOfLongestSubstring("bbbbbam"))
 
+# Length of Longest substring without repeating characters
+# BETTER VERSION!
+# O(2N) ==> O(n)
+# Keep two ptrs at beginning..increment j till it reaches the end
+# Keep a set to keep track of unique elements so far..len(set) will give us length needed
+# If duplicate char found, remove char at i and move i ahead
+def lengthOfLongestSubstring2(s):
+        max_so_far = 0
+        i = j = 0
+        uniques = set()
+        while j < len(s):
+            if s[j] not in uniques:
+                uniques.add(s[j])
+                j += 1
+                max_so_far = max(max_so_far, len(uniques))
+            else:
+                uniques.remove(s[i])
+                i += 1
+        return max_so_far
+# print(lengthOfLongestSubstring2("bbbbbam"))
+
+
 # Longest palindromic substring
 def longestPalindrome(s):
     longest = ""
@@ -375,13 +397,13 @@ def twoSum1(a, target):
             if str(temp) not in o:
                 o.add(str(temp))
         d[a[i]] = i
-    print(d)
+    # print(d)
         
     return o
 
 a1 = [6,6,3,9,3,5,12]
 a = [7,8,13,20,12,12,6,1,11]
-print(twoSum1(a1,12))
+# print(twoSum1(a1,12))
 
 # max depth of tree
 def maxDepth(node): 
@@ -1912,6 +1934,9 @@ def addTwoNumbers(l1, l2):
     return result.next # can't do result coz leading 0
 
 # LRU Cache
+# Doubly linked list and hashmap
+# hashmap stores key and value will be the whole node in LL
+# Doubly linked list coz we can delete in O(1) without traversing whole LL
 class Node:
     def __init__(self,k, v):
         self.key = k
