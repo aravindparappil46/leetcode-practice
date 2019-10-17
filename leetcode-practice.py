@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
 # Length of Longest substring without repeating characters
 def lengthOfLongestSubstring(s):
-    lastRepeating = -1
+    lastRepeating = float("-inf")
     longestSubstring = 0
     positions = {}
     
@@ -106,12 +106,10 @@ def longestPalindrome(s):
     longest = ""
     for i in range(len(s)):
         temp = expandFromCenter(s, i, i)
-        print(i,i,temp)
         if len(temp) > len(longest):
             longest = temp
             
         temp = expandFromCenter(s, i, i+1)
-        print('===',i, i+1, temp)
         if len(temp) > len(longest):
             longest = temp
             
