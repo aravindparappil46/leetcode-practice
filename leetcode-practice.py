@@ -2029,3 +2029,29 @@ def changeNeighbours(grid, i, j):
     self.changeNeighbours(grid, i, j-1)
 
 
+# Product except self
+# Given array, return a new array whose elements are the product of all elements 
+# other than itself
+#
+# TIME COMPLEXITY => O(n)
+# For each number, find the product of all numbers to its left
+# For each number, find the product of all numbers to its right
+# Res is the product of left arr and right arr
+def productExceptSelf(nums):
+    leftProducts = [0] * len(nums)
+    rightProducts = [0] * len(nums)
+    result = []
+    
+    leftProducts[0] = 1
+    rightProducts[len(nums)-1] = 1
+    
+    for i in range(1, len(nums)):
+        leftProducts[i] = nums[i-1] * leftProducts[i-1]
+    
+    for i in reversed(range(len(nums)-1)):
+        rightProducts[i] = nums[i+1] * rightProducts[i+1]
+    
+    for i in range(len(nums)):
+        result.append(leftProducts[i] * rightProducts[i])
+    
+    return result
