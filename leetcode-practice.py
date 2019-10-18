@@ -2055,3 +2055,38 @@ def productExceptSelf(nums):
         result.append(leftProducts[i] * rightProducts[i])
     
     return result
+
+# Word Search
+# Given matrix of letters, check if a word can be formed by vert or hori
+# traversal
+# USE DFS
+#
+def exist(board: List[List[str]], word):
+    if not board:
+        return False
+    
+    for i in range(0, len(board)):
+        for j in range(0, len(board[0])):
+            if neighborhoodSearch(board, i, j, word, []):
+                return True
+    return False
+
+def neighborhoodSearch(board, i, j, word, visited):
+    if len(word) == 0:
+        return True
+    
+    if i >= len(board) or j >= len(board[0]) or i < 0 or j < 0 or board[i][j] != word[0] or (i,j) in visited:
+        return False
+    
+    visited.append((i,j))
+    # Each time, the first element of the word is sliced off
+    res = neighborhoodSearch(board, i-1, j, word[1:], visited) or \
+          neighborhoodSearch(board, i+1, j, word[1:], visited) or \
+          neighborhoodSearch(board, i, j-1, word[1:], visited) or \
+          neighborhoodSearch(board, i, j+1, word[1:], visited) 
+          
+    # If we didn't find a match yet, we can reuse the letter at (i,j) again
+    if not res:
+        visited.pop()
+        
+    return res
