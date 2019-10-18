@@ -2057,10 +2057,11 @@ def productExceptSelf(nums):
     return result
 
 # Word Search
+# Crossword puzzle
 # Given matrix of letters, check if a word can be formed by vert or hori
 # traversal
-# USE DFS
 #
+# USE DFS
 def exist(board: List[List[str]], word):
     if not board:
         return False
@@ -2075,7 +2076,8 @@ def neighborhoodSearch(board, i, j, word, visited):
     if len(word) == 0:
         return True
     
-    if i >= len(board) or j >= len(board[0]) or i < 0 or j < 0 or board[i][j] != word[0] or (i,j) in visited:
+    if i >= len(board) or j >= len(board[0]) or i < 0 or j < 0 or board[i][j] != word[0] \
+        or (i,j) in visited:
         return False
     
     visited.append((i,j))
@@ -2084,7 +2086,7 @@ def neighborhoodSearch(board, i, j, word, visited):
           neighborhoodSearch(board, i+1, j, word[1:], visited) or \
           neighborhoodSearch(board, i, j-1, word[1:], visited) or \
           neighborhoodSearch(board, i, j+1, word[1:], visited) 
-          
+
     # If we didn't find a match yet, we can reuse the letter at (i,j) again
     if not res:
         visited.pop()
