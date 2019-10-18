@@ -150,11 +150,12 @@ def expandFromCenter(s, start, end):
 # Time complexity = O(n^2)
 def threeSum(arr, t):
     arr.sort()
-    result = set() # not a list, to avoid duplicates
-    r = len(arr)-1
-    
+    result = set() # not a list to avoid duplicates
+
     for i in range(len(arr)):
+        # After a whole while loop ends, reset l and r
         l = i + 1
+        r = len(arr) - 1 
         while(l < r):
             s = arr[i] + arr[l] + arr[r]
             if s < t:
@@ -164,7 +165,7 @@ def threeSum(arr, t):
             if s == t:
                 result.add((arr[i], arr[l], arr[r]))
                 l += 1
-                
+
     return result
 
 arr = [0,8,1,9,22,2]
@@ -1998,3 +1999,33 @@ class LRUCache:
         next_node = n.next
         previous_node.next = next_node
         next_node.prev = previous_node
+
+
+# Number of islands. Connected components
+# numberOfIslands
+# Find the first 1 and then change it's neighbors to zero
+# using DFS. Count of such 1s will be num of islands
+def numIslands(grid: List[List[str]]):
+    if not grid:
+        return 0
+    
+    r = len(grid)
+    c = len(grid[0])
+    count = 0
+    for i in range(r):
+        for j in range(c):
+            if grid[i][j] == '1':
+                changeNeighbours(grid, i, j)
+                count += 1
+    return count
+
+def changeNeighbours(grid, i, j):
+    if i<0 or j<0 or i>=len(grid) or j>=len(grid[0]) or grid[i][j] != '1':
+        return
+    grid[i][j] = '0'
+    self.changeNeighbours(grid, i+1, j)
+    self.changeNeighbours(grid, i-1, j)
+    self.changeNeighbours(grid, i, j+1)
+    self.changeNeighbours(grid, i, j-1)
+
+
