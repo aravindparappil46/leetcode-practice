@@ -7,16 +7,13 @@ from collections import deque
 # print(int(str(a)[1]))
 
 
-a = [1,2,3]
-def two(nums, target):
-	d = {}
-	out = set()
-	for i in range(len(nums)-1):
-		compliment = target - nums[i]
-		if compliment in d:
-			out.add((d[compliment], i))
-		else:
-			d[nums[i]] = i
-	return out
+a = [1,[2,3]]
+o = []
+for i in a:
+	if isinstance(i,int):
+		o.append(i)
+	else:
+		for l in i:
+			o.append(l)
 
-print(two(a,3))
+print(o)

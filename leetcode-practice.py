@@ -2191,7 +2191,7 @@ def recurse(nums, path, res):
 # Given an array, partition it into two such that sum of each is same
 # [1,5,11,5] ==> [1,5,5] and [11]
 # 
-# Keep a freq dict for each number
+# Keep a freq dict for each number.
 # If total sum is odd, quit. 
 # 
 def partitionEqualSubsetSum(nums):
@@ -2206,12 +2206,14 @@ def partitionEqualSubsetSum(nums):
         return recurse(freq, sum(nums)//2)
     
 def recurse(freq, target):
+    # We were able to get to 0. Successful partitioning
     if target == 0:
         return True
     
     if target < 0:
         return False
     
+    # Iterate over all nums
     for num in freq:
         # We ran out of occurrences of that number. So go to next num
         if freq[num] == 0:
@@ -2222,6 +2224,41 @@ def recurse(freq, target):
             return True
         
         # That number was not useful, so reset its freq
-        freq[num] += 1
-        
+        freq[num] += 1    
     return False
+
+# Check if two strings are isomorphic / isomorphicStrings
+#
+# Can be isomorphic if distribution of letters
+# are same in both strings and those with same distribution
+# are located at same indices
+#
+# eg: egg => e: [1, [0]], g: [2: [1,2]]
+#     add => a:[1,[0]], d: [2, [1,2]]
+# Create a dict to store these and compare
+def isIsomorphic(self, s: str, t: str) -> bool:
+    if not s or not t:
+        return True
+    freq_s = {}
+    freq_t = {}
+    for i, letter in enumerate(s):
+        if letter in freq_s:
+            freq_s[letter][0] += 1
+            freq_s[letter][1].append(i)
+        else:
+            freq_s[letter] = [1,[i]]
+    
+    for i, letter in enumerate(t):
+        if letter in freq_t:
+            freq_t[letter][0] += 1
+            freq_t[letter][1].append(i)
+        else:
+            freq_t[letter] = [1,[i]]
+    
+    vals_s = list(freq_s.values())
+    vals_t = list(freq_t.values())
+    
+    return vals_s == vals_t
+
+
+
