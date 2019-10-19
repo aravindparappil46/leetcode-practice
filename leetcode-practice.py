@@ -1325,6 +1325,7 @@ arr = [0,8,1,9,22,2]
 # print(threeSumm(arr,9))
 
 # 24. Given string, insert spaces after words, given dict of valid words
+# Word Break / wordbreak
 def insertSpaces(s, validWords):
     temp = ''
     result = ''
@@ -2058,11 +2059,10 @@ def productExceptSelf(nums):
 
 # Word Search
 # Crossword puzzle
-# Given matrix of letters, check if a word can be formed by vert or hori
-# traversal
-#
+# Given matrix of letters, check if a word can be formed by vert or hori traversal
+# 
 # USE DFS
-def exist(board: List[List[str]], word):
+def wordSearch(board: List[List[str]], word):
     if not board:
         return False
     
@@ -2130,3 +2130,23 @@ def findKthLargest(nums, k):
             k -= 1
     
     nums1[:j+1] = nums2[:j+1]
+
+# Merge 2 lists
+# Keep a dummy so that we can return dummy.next
+# Iterate over l1 and l2 and pick smallest one to be assigned to prev
+def mergeTwoLists(l1: ListNode, l2: ListNode) :
+    dummy = ListNode(0)
+    prev = dummy
+    
+    while l1 and l2:
+        if l1.val <= l2.val:
+            prev.next = l1
+            l1 = l1.next
+        else:
+            prev.next = l2
+            l2 = l2.next
+        prev = prev.next
+    
+    #left over
+    prev.next = l1 or l2
+    return dummy.next
