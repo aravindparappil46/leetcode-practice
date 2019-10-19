@@ -2006,7 +2006,7 @@ class LRUCache:
 # numberOfIslands
 # Find the first 1 and then change it's neighbors to zero
 # using DFS. Count of such 1s will be num of islands
-def numIslands(grid: List[List[str]]):
+def numIslands(grid):
     if not grid:
         return 0
     
@@ -2062,7 +2062,7 @@ def productExceptSelf(nums):
 # Given matrix of letters, check if a word can be formed by vert or hori traversal
 # 
 # USE DFS
-def wordSearch(board: List[List[str]], word):
+def wordSearch(board, word):
     if not board:
         return False
     
@@ -2114,11 +2114,11 @@ def findKthLargest(nums, k):
 # Assume arr1 will have extra 0s at the end to accomodate new vals
 #
 # Eg. [1,2,3,0,0] & [4,5] 
- def mergeInPlace( nums1, nums2):
+def mergeInPlace(nums1, nums2):
     i = len(nums1) - 1
     j = len(nums2) - 1
     k = len(nums1) + len(nums2) - 1
-    
+
     while i >=0 and j >= 0:
         if nums1[i] < nums2[j]:
             nums1[k] = nums2[j]
@@ -2128,7 +2128,7 @@ def findKthLargest(nums, k):
             nums1[k] = nums1[i]
             i -= 1
             k -= 1
-    
+
     nums1[:j+1] = nums2[:j+1]
 
 # Merge 2 lists
@@ -2150,3 +2150,78 @@ def mergeTwoLists(l1: ListNode, l2: ListNode) :
     #left over
     prev.next = l1 or l2
     return dummy.next
+
+# Top K FREQUENT elements
+# Create a counter dict..push all nums into a MAX_HEAP (negate and push)
+# Pop from heap till k reached 
+def topKFrequent(nums, k):
+    d = collections.Counter(nums)
+
+    heap = []
+    for key, v in d.items():
+        heapq.heappush(heap, (-v, key))
+    
+    out = []
+    i = 0
+    while i < k and len(heap) > 0:
+        x = heapq.heappop(heap)
+        out.append(x[1])
+        i += 1
+    return out
+
+# Permutations of an array
+# Do DFS
+# Time complexity is O(n!)
+def permute(nums):
+    res = []
+    recurse(nums, [], res)
+    return res
+
+def recurse(nums, path, res):
+    if not nums:
+        res.append(path)
+    
+    for i in range(len(nums)):
+        recurse(nums[:i]+nums[i+1:], path+[nums[i]], res)
+
+# a = [1,2,3]
+# print(permute(a))
+
+# Partition equal subset sum
+# Given an array, partition it into two such that sum of each is same
+# [1,5,11,5] ==> [1,5,5] and [11]
+# 
+# Keep a freq dict for each number
+# If total sum is odd, quit. 
+# 
+def partitionEqualSubsetSum(nums):
+        # If sum is odd, can't do anything. Quit
+        if sum(nums) % 2 == 1:
+            return False
+        
+        # Get a freq dict
+        freq = collections.Counter(nums)
+        
+        # We need to reach zero after subtracting from half the sum
+        return recurse(freq, sum(nums)//2)
+    
+def recurse(freq, target):
+    if target == 0:
+        return True
+    
+    if target < 0:
+        return False
+    
+    for num in freq:
+        # We ran out of occurrences of that number. So go to next num
+        if freq[num] == 0:
+            continue
+        freq[num] -= 1
+        # Keep decreasing the target with curr number
+        if recurse(freq, target - num):
+            return True
+        
+        # That number was not useful, so reset its freq
+        freq[num] += 1
+        
+    return False
