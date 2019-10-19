@@ -931,7 +931,7 @@ root.left.right = TreeNode(3)
 
 # 14. Move all zeroes to end of array
 # count variable keeps track of non-zero nums..swap iterator with count
-# to move non-zeroes ahead
+# to move non-zeroes to the front
 # Time - O(n)
 # Space - O(1)
 def moveZeroesToEnd(arr):
@@ -2092,3 +2092,41 @@ def neighborhoodSearch(board, i, j, word, visited):
         visited.pop()
         
     return res
+
+# Find kth largest number in array
+# Push all to heap
+# Pop from heap till k reached
+def findKthLargest(nums, k):
+    maxHeap = []
+    for i in nums:
+        heapq.heappush(maxHeap, -i)
+        
+    for i in range(len(maxHeap)):
+        x = heapq.heappop(maxHeap)
+        if i == k-1:
+            return -x
+
+
+# Merge 2 sorted arrays in place
+# Keep ptrs at the ends of both arrays and 
+# copy over the smallest val
+# This avoids the problem of shifting over/overwriting, if ptrs were at start
+# Assume arr1 will have extra 0s at the end to accomodate new vals
+#
+# Eg. [1,2,3,0,0] & [4,5] 
+ def mergeInPlace( nums1, nums2):
+    i = len(nums1) - 1
+    j = len(nums2) - 1
+    k = len(nums1) + len(nums2) - 1
+    
+    while i >=0 and j >= 0:
+        if nums1[i] < nums2[j]:
+            nums1[k] = nums2[j]
+            j -= 1
+            k -= 1
+        else:
+            nums1[k] = nums1[i]
+            i -= 1
+            k -= 1
+    
+    nums1[:j+1] = nums2[:j+1]
