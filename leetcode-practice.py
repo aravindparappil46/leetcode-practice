@@ -2454,6 +2454,8 @@ def decodeString(self, s: str) -> str:
             # putting the repeating string back to stack
             for i in res:
                 stack.append(i)
+
+        # This can be an opening bracket or an alpha
         else:
             consecutive = 0
             stack.append(i)
