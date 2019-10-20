@@ -2236,7 +2236,7 @@ def recurse(freq, target):
 # eg: egg => e: [1, [0]], g: [2: [1,2]]
 #     add => a:[1,[0]], d: [2, [1,2]]
 # Create a dict to store these and compare
-def isIsomorphic(self, s: str, t: str) -> bool:
+def isIsomorphic(s, t):
     if not s or not t:
         return True
     freq_s = {}
@@ -2260,5 +2260,32 @@ def isIsomorphic(self, s: str, t: str) -> bool:
     
     return vals_s == vals_t
 
-
+# Given two arrays, num1 and num2 where num1 is subset of num2
+# Find the next greatest element for each element in num1
+#
+# Need a stack and a dict (keeps track of next largest num for each num in num2)
+# Start pushing nums2 (largest arrr) into a stack
+# If curr num > tos, pop tos and mark curr num as tos's next largest number
+# This shud be repeated till stack is empty. We append the curr num to stack afterwards
+# If there are leftovers in stack, they don't have any larger num to their right (mark as -1)
+def nextGreaterElement(nums1, nums2):
+    stack = []
+    d = {}
+    o = []
+    if nums2:
+        stack.append(nums2[0])
+    for i in range(1, len(nums2)):
+        while stack and nums2[i] > stack[-1]:
+            tos = stack.pop()
+            d[tos] = nums2[i]
+           
+        stack.append(nums2[i])
+    
+    while stack:
+        d[stack.pop()] = -1
+    # Iterate over the dict to print out the next largest number
+    for i in range(len(nums1)):
+        o.append(d[nums1[i]])
+    return o
+        
 
