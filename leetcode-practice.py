@@ -2366,4 +2366,46 @@ class copyListWithRandomPointer:
             new_node = Node(node.val, None, None)
             self.visited[node] = new_node
             return new_node
-        
+
+
+# Subsets
+# Given an array [1,2,3], return all of its subsets (i.e.,powerset)
+# [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]
+#
+# Do DFS. In recursion, take everything apart from what we took now from nums
+def subsets(nums):
+        o = []
+        recurse(nums, [], o)
+        return o
+    
+def recurse(nums, path, o):
+    o.append(path) # don't check anything, just add
+    
+    # add curr num to path and everything from curr will go in next recursive call
+    for i in range(len(nums)):
+        recurse(nums[i+1:], path+[nums[i]], o) 
+
+
+# Generate Parentheses
+#
+# Basically, we keep track of how many left brackets and right brackets
+# are remaining. Do DFS till there are more left brackets than right (which will never be valid)
+# If, for some path, BOTH lBrackets and rBrackets are empty, then we found a valid one
+#
+# Do DFS. 
+# TIME COMPLEXITY -- More than exponential
+def generateParenthesis(n):
+    o = []
+    recurse(n,n,'',o)
+    return o
+
+def recurse(lBracketCount, rBracketCount, path, res):
+    if lBracketCount > rBracketCount or lBracketCount < 0 or rBracketCount < 0:
+        return
+    
+    if lBracketCount == 0 and rBracketCount == 0:
+        res.append(path)
+        return
+    
+    recurse(lBracketCount-1, rBracketCount, path+'(', res)
+    recurse(lBracketCount, rBracketCount-1, path+')', res)
