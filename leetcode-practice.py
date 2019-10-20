@@ -2316,3 +2316,54 @@ def nextGreaterElements2(nums):
     for k,v in sorted(d.items(), key = lambda x:x[0]):
         o.append(v)
     return o
+
+# Copy list with random ptr pointer
+#
+# Keep a dict that tracks old node --> new node
+# For each old node, see if it is already visited. If yes, return that node
+# If not, create a new node with that value and return that
+#
+# TIME COMPLEXITY ==> O(N)
+# SPACE COMPLEXITY ==> O(N) which is the dict of n nodes
+"""
+class Node:
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+"""
+class copyListWithRandomPointer:
+    def __init__(self):
+        self.visited = {}
+        
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        if not head:
+            return head
+        
+        old = head
+        new = Node(old.val, None, None)
+        self.visited[old] = new # old head points to new node
+        
+        while old:
+            new.next = self.getNode(old.next)
+            new.random = self.getNode(old.random)
+            
+            old = old.next
+            new = new.next
+            
+        return self.visited[head]
+    
+    # Function returns node if exists, else creates a node 
+    # and returns that
+    def getNode(self, node):
+        if not node:
+            return None
+        
+        if node in self.visited:
+            return self.visited[node]
+        
+        else:
+            new_node = Node(node.val, None, None)
+            self.visited[node] = new_node
+            return new_node
+        
