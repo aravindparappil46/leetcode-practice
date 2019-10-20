@@ -146,7 +146,7 @@ def expandFromCenter(s, start, end):
 # print(longestPalindrome("abxbax"))
 
 
-# 3 Sum
+# 3 Sum / 3Sum
 # Time complexity = O(n^2)
 def threeSum(arr, t):
     arr.sort()
@@ -2409,3 +2409,53 @@ def recurse(lBracketCount, rBracketCount, path, res):
     
     recurse(lBracketCount-1, rBracketCount, path+'(', res)
     recurse(lBracketCount, rBracketCount-1, path+')', res)
+
+
+# Decode string
+# 3[a2[f]] ==> affaffaff
+#
+# Keep 2 stacks, one that stores numbers and another for 
+# opening brackets and alphas
+#
+def decodeString(self, s: str) -> str:
+    stack = []
+    num_stack = []
+    final = ''
+    consecutive = 0
+    
+    for i in s:
+        # Populating the numbers stack
+        # There may be more than one digit, so we
+        # keep track of whether consecutive numbers are encountered or not
+        # If yes, we pop from numbers stack and create a new number to push
+        if i.isnumeric():
+            consecutive += 1
+            if consecutive == 1:
+                num_stack.append(int(i))
+            else:
+                tos = num_stack.pop()
+                new_num  = str(tos) + i
+                num_stack.append(int(new_num))
+
+        # If closing bracket found, then we need to pop
+        # till we reach an opening bracket
+        # This string should be repeated by whatever is the tos
+        # of numbers stack  
+        elif i == ']':
+            consecutive = 0
+            temp = ''
+            res = ''
+            while stack[-1] != '[':
+                temp += stack.pop()
+            
+            stack.pop() # popping the [
+            res += temp[::-1] * num_stack.pop()
+            
+            # putting the repeating string back to stack
+            for i in res:
+                stack.append(i)
+        else:
+            consecutive = 0
+            stack.append(i)
+    
+    return ''.join(stack)
