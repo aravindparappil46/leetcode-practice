@@ -2289,3 +2289,30 @@ def nextGreaterElement(nums1, nums2):
     return o
         
 
+# Next Greater Element II - can wrap around the array circularly
+# Only given one array, find the next greater elements for all (incl. last elem)
+#
+# Keep a dict with {index: nextGreaterElement, .....} and stack
+# It's like duplicating the array, but only with length and 
+# we traverse circularly using %
+def nextGreaterElements2(nums):
+    d = {}
+    stack = []
+    o = []
+    n = len(nums)
+    
+    # Go till 2 times the length of num
+    for i in range(0, n*2):
+        while stack and nums[stack[-1]] < nums[i%n]: # circular traversal
+            d[stack.pop()] = nums[i%n]
+        if i < n:
+            stack.append(i)
+    
+    # If there's leftovers, put -1
+    while stack:
+        d[stack.pop()] = -1
+    
+    # Need to sort the dict by key
+    for k,v in sorted(d.items(), key = lambda x:x[0]):
+        o.append(v)
+    return o
