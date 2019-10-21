@@ -1439,24 +1439,25 @@ def isUniqueWorkerAndBike(a, b):
 #
 def searchRotatedSortedArray(arr, t):
     l = 0
-    r = len(arr) - 1
-
+    r = len(nums)-1
+    
     while l <= r:
-        mid = (l+r) // 2 # instead of r, can do (r-l)
-        if arr[mid] == t:
+        mid = (l + r)//2
+        
+        if nums[mid] == target:
             return mid
-
-        if arr[mid] >= arr[l]: # left half is sorted
-            if t < arr[mid] and t >= arr[l]:
-                r = mid -1
+        
+        if nums[l] <= nums[mid]: 
+            if nums[l] <= target < nums[mid]: # left half is sorted. Dont go beyond mid
+                r = mid - 1
             else:
                 l = mid + 1
-
-        if arr[mid] <= arr[r]: # right half is sorted
-            if t > arr[mid] and t <= arr[r]:
+                
+        else:
+            if nums[mid] < target <= nums[r]: # right half is sorted.
                 l = mid + 1
             else:
-                r = mid + 1
+                r = mid - 1
     return -1
 
 arr = [4,5,6,7,0,1,2]
@@ -2481,3 +2482,8 @@ def findPeakElement(nums):
         else:
             l = mid + 1
     return r # or left. Doesn't matter
+
+
+
+
+
