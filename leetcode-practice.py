@@ -2579,3 +2579,55 @@ def getIntersectionNode(headA, headB):
             prev = stack1.pop()
        
     return prev
+
+# Length of longest valid parentheses
+# Keep two counters; one for left brackets and one for right
+# Scan from left to right - increment corresponding counter as u encounter a bracket
+# if r > l, reset counters
+# if l == r, max len will be l + r
+#
+# Scan right to left
+# if l > r, reset counters
+# if l ==r, max len will be l + r
+def longestValidParentheses(self, s: str) -> int:
+    l = 0
+    r = 0
+    max_so_far = 0
+    
+    # Left to right scan
+    for i in range(len(s)):
+        if r > l:
+            l = 0
+            r = 0
+            
+        if s[i] == '(':
+            l += 1
+            
+        elif s[i] == ')':
+            r += 1
+        
+        if l == r:
+            curr_max = l + r
+            if curr_max > max_so_far:
+                max_so_far = curr_max
+    
+    l = 0
+    r = 0
+    # Right to left scan
+    for i in reversed(range(len(s))):
+        if l > r:
+            l = 0
+            r = 0
+        
+        if s[i] == '(':
+            l += 1
+            
+        elif s[i] == ')':
+            
+            r += 1
+        if l == r:
+            curr_max = l + r
+            if curr_max > max_so_far:
+                max_so_far = curr_max
+    
+    return max_so_far
