@@ -2555,3 +2555,27 @@ def reverseList(head):
 
     return prev
 
+# Get intersection of Linked Lists
+#
+# Push all nodes to separate stacks
+# Pop from both stacks and if same, mark it
+# Time complexity = O(n)
+# Space complexity = o(m+n)
+def getIntersectionNode(headA, headB):
+    stack1 = []
+    stack2 = []
+    
+    while headA:
+        stack1.append(headA)
+        headA = headA.next
+        
+    while headB:
+        stack2.append(headB)
+        headB = headB.next
+    
+    prev = None
+    while stack1 and stack2:
+        if stack1[-1] is stack2.pop(): # Not checking the val, but reference
+            prev = stack1.pop()
+       
+    return prev
