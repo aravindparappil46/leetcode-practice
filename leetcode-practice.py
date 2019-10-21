@@ -2540,3 +2540,18 @@ def mergeKLists(lists):
         
     return head.next
 
+# Reverse a linked list / linkedlist
+def reverseList(head):
+    prev = None
+    while head:
+        temp = head.next
+        if prev == None:
+            head.next = None  
+        else:
+            head.next = prev
+            
+        prev = head
+        head = temp
+
+    return prev
+
