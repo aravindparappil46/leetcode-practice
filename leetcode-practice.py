@@ -1936,7 +1936,7 @@ def addTwoNumbers(l1, l2):
         
     return result.next # can't do result coz leading 0
 
-# LRU Cache
+# 36. LRU Cache
 # Doubly linked list and hashmap
 # hashmap stores key and value will be the whole node in LL
 # Doubly linked list coz we can delete in O(1) without traversing whole LL
@@ -2318,7 +2318,7 @@ def nextGreaterElements2(nums):
         o.append(v)
     return o
 
-# Copy list with random ptr pointer
+# 29. Copy list with random ptr pointer
 #
 # Keep a dict that tracks old node --> new node
 # For each old node, see if it is already visited. If yes, return that node
@@ -2484,6 +2484,59 @@ def findPeakElement(nums):
     return r # or left. Doesn't matter
 
 
+# Find k closest points to origin (0,0)
+#
+# Given array of cartesian coords like [[2,-2], [4,5]]
+# Use Euclidean distance 
+# e.x. (x1,y1) & (x2, y2) => sqrt((x2-x1)^2 + (y2-y1)^2)
+import math
+def kClosest(points, k):
+    all_dists = []
+    o = []
+    
+    for pair in points:
+        dist = euclidean(pair)
+        heapq.heappush(all_dists, (dist,pair))
+    
+    for i in range(0,k):
+        o.append(heapq.heappop(all_dists)[1])
+        
+    return o
+
+# Euclidean dist wrt (0,0) is just the root of sum of squares
+def euclidean(pair):
+    return math.sqrt((pair[0]**2 + pair[1]**2))
 
 
+# Merge K sorted lists
+#
+# Use a heap to find the smallest value so far
+def mergeKLists(lists):
+    heap = [] # used to get the least in each iteration
+    o = [] # stores all the vals. Make into a LL later
+    res = ListNode(-1)
+    head = res # use this to give back the head
+    
+    # pushing all the initial vals & index of 
+    # where they came from
+    for i, ll in enumerate(lists):
+        if ll:
+            heapq.heappush(heap, (ll.val, i))
+        
+    while heap:
+        least, index = heapq.heappop(heap)
+        o.append(least)
+        
+        # Found a least val, so move that LL ahead by next
+        if lists[index].next:
+            lists[index] = lists[index].next
+            heapq.heappush(heap, (lists[index].val, index))
+    
+    # All vals found. Now link them together to form a LL
+    for val in o:
+        node = ListNode(val)
+        res.next = node
+        res = res.next
+        
+    return head.next
 
