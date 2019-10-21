@@ -2461,3 +2461,23 @@ def decodeString(self, s: str) -> str:
             stack.append(i)
     
     return ''.join(stack)
+
+# Find peak element
+# Return index of number which is greater than its left neighbor and right neighbor
+#
+# Do binary search. If mid is > mid+1, mid is in an increasing slope, so check left side now
+# If mid < mid + 1 , mid is in a decreasig slope, so check right side
+# This works coz we are asked to return ANY local peak (not global or not local at one side either)
+#
+# Time complexity => O(logN) (search space reduced to half in every step)
+def findPeakElement(nums):
+    l = 0
+    r = len(nums) - 1
+    
+    while l < r:
+        mid = (l+r)//2
+        if nums[mid] > nums[mid+1]:
+            r = mid
+        else:
+            l = mid + 1
+    return r # or left. Doesn't matter
