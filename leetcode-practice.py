@@ -2589,7 +2589,7 @@ def getIntersectionNode(headA, headB):
 # Scan right to left
 # if l > r, reset counters
 # if l ==r, max len will be l + r
-def longestValidParentheses(self, s: str) -> int:
+def longestValidParentheses(s):
     l = 0
     r = 0
     max_so_far = 0
@@ -2631,3 +2631,20 @@ def longestValidParentheses(self, s: str) -> int:
                 max_so_far = curr_max
     
     return max_so_far
+
+# Convert number to Excel column title
+# Modulo 26 gets the last alpha
+# Keep track of it
+# Update n = n // 26 
+def convertToTitle(n):
+    capitals = [chr(x) for x in range(ord('A'), ord('Z')+1)]
+    
+    result = ""
+    
+    while n > 0:
+        last = (n-1) % 26
+        n = (n-1) // 26
+        result += capitals[last]
+        
+    return result[::-1]
+        
