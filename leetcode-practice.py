@@ -2698,3 +2698,42 @@ def isGoal(board, player):
     return False
 
 
+# Course Schedule - Given num of courses to take and edge list
+# of [course, prereq], see if those many courses can be taken or not
+#
+# SOLN: Check if cycle exists in graph
+# Create a graph from edge list. Run dfs and check for cycle
+# using a visited array (states can be being visited, done visited, not visited)
+#
+# Time complexity: 
+#    O(V+E) to create each course node and add each edge.
+#    Traversing graph: O(V+E) to visit each node and check each edge exactly once.
+# Overall ==> O(N)
+def courseSchedule(numCourses,  prerequisites: List[List[int]]):
+    graph = [[] for x in range(numCourses)]
+    visited = [0 for x in range(numCourses)]
+    
+    for course, prereq in prerequisites: # from an adj matrix
+        graph[course].append(prereq)
+    
+    for i in range(numCourses):
+        if not dfs(graph, visited, i):
+            return False
+    
+    return True
+
+def dfs(graph, visited, i):
+    if visited[i] == -1: # node being visited, cycle!
+        return False
+    
+    if visited[i] == 1: # node already done visited
+        return True
+    
+    visited[i] = -1 # mark this node as being visited (i.e, its children are being visited)
+    
+    for j in graph[i]: # visit all the neighbors
+        if not dfs(graph, visited, j):
+            return False
+    
+    visited[i] = 1 # all children seen now, mark it as done visited
+    return True

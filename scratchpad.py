@@ -6,5 +6,5 @@ from collections import deque
 # a=12
 # print(int(str(a)[1]))
 
-a = 'a'
-print(a.isnumeric())
+for i in range(4,-1,-1):
+	print(i)
