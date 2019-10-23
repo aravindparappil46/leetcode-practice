@@ -2648,3 +2648,53 @@ def convertToTitle(n):
         
     return result[::-1]
         
+# Valid Tic Tac Toe State
+# Given a list of strings, check if it can be a valid state
+#
+#
+def validTicTacToe(board):
+    x_count = o_count = 0
+    
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == 'X':
+                x_count += 1
+            elif board[i][j] == 'O':
+                o_count += 1
+    # Since X always goes first, o shudnt be greater
+    if o_count > x_count:
+        return False
+
+    # Since players take turns, diff will always be 1 or 0
+    if x_count - o_count > 1:
+        return False
+     
+    # If O wins, X shudn't and count shud be same
+    if isGoal(board, 'O'):
+        if isGoal(board, 'X'):
+            return False
+        return x_count == o_count
+    
+    if isGoal(board, 'X'):  # X wins, then diff shud be 1
+        return x_count - o_count == 1
+    
+    # Nothing gets caught, so has to be true
+    return True
+         
+# Check if player has won or not
+def isGoal(board, player):
+    for i in range(len(board)): # ROWS
+        if board[i][0] == board[i][1] == board[i][2] == player:
+            return True
+    
+    for i in range(len(board)): # COLS
+        if board[0][i] == board[1][i] == board[2][i] == player:
+            return True
+    
+    if board[0][0] == board[1][1] == board[2][2] == player or \
+       board[0][2] == board[1][1] == board[2][0] == player:
+        return True
+    
+    return False
+
+
