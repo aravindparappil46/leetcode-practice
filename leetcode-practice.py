@@ -882,6 +882,23 @@ def uniqueInStream(s):
 s = 'thisisthisah'
 #uniqueInStream(s)
 
+# Find first non repeating character in string
+# ONE PASS!
+# First unique character in string
+# Keep removing ALL OCCURENCES of first character of string
+# If old length and new length of string differs only by 1, means that the
+# letter we replaced was there only once in whole string
+def firstNonRepeatingChar(s):
+    while s != "":
+        len0 = len(s)
+        ch = s[0]
+        s = s.replace(ch, "")
+        len1 = len(s)
+        if len1 == len0-1:
+            return ch
+    return -1
+
+
 # 12. Run length encoding
 def runlengthEncoding(s):
     d = { i:0 for i in s }
@@ -2737,3 +2754,7 @@ def dfs(graph, visited, i):
     
     visited[i] = 1 # all children seen now, mark it as done visited
     return True
+
+
+
+
