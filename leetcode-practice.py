@@ -438,7 +438,7 @@ def removeDup(a):
     d = {i:0 for i in a}
     for key, val in d.items():
         print(key)
-        
+   
 a = [1,1,2,1,1,1,2,3,4,4,4,4,4,4]
 #removeDup(a)
 
@@ -896,7 +896,7 @@ def firstNonRepeatingChar(s):
         len1 = len(s)
         if len1 == len0-1:
             return ch
-    return -1
+    return None
 
 
 # 12. Run length encoding
@@ -1713,7 +1713,8 @@ def longestPalindromicSubstring(s):
     for i in range(1, len(s)):
         for j in range(0, i):
 
-            isInnerWordPalin = DP[j+1][i-1] or i-j <= 2 # if s = abcba, inner word is bcb
+            isInnerWordPalin = DP[j+1][i-1] or i-j <= 2 
+            # if s = abcba, inner word is bcb
 
             if s[i] == s[j] and isInnerWordPalin:
                 DP[j][i] = True
@@ -2338,7 +2339,8 @@ def nextGreaterElements2(nums):
 # 29. Copy list with random ptr pointer
 #
 # Keep a dict that tracks old node --> new node
-# For each old node, see if it is already visited. If yes, return that node
+# For each old node (next and random), see if it is already visited. 
+# If yes, return that node
 # If not, create a new node with that value and return that
 #
 # TIME COMPLEXITY ==> O(N)
@@ -2427,7 +2429,6 @@ def recurse(lBracketCount, rBracketCount, path, res):
     
     recurse(lBracketCount-1, rBracketCount, path+'(', res)
     recurse(lBracketCount, rBracketCount-1, path+')', res)
-
 
 # Decode string
 # 3[a2[f]] ==> affaffaff
@@ -2640,8 +2641,8 @@ def longestValidParentheses(s):
             l += 1
             
         elif s[i] == ')':
-            
             r += 1
+
         if l == r:
             curr_max = l + r
             if curr_max > max_so_far:
@@ -2697,7 +2698,7 @@ def validTicTacToe(board):
     
     # Nothing gets caught, so has to be true
     return True
-         
+
 # Check if player has won or not
 def isGoal(board, player):
     for i in range(len(board)): # ROWS
@@ -2757,4 +2758,27 @@ def dfs(graph, visited, i):
 
 
 
-
+# Trapping Rain Water
+# Run two ptrs; left and right
+# Volume that bar i can contain is: 
+# min(left_max, right_max) - bar[i] (min of its neighbors minus itself)
+# if l_max is < r_max, then we can avoid the right_max in above eq
+# Similarly, if r_max is < l_max, we can avoid the left_max
+#
+# Time Complexity is O(n)
+def trappingRainWater(height):
+    if not height or len(height) < 3:
+        return 0
+    volume = 0
+    left, right = 0, len(height) - 1
+    l_max, r_max = height[left], height[right]
+    
+    while left < right:
+        l_max, r_max = max(height[left], l_max), max(height[right], r_max)
+        if l_max <= r_max:
+            volume += l_max - height[left]
+            left += 1
+        else:
+            volume += r_max - height[right]
+            right -= 1
+    return volume
