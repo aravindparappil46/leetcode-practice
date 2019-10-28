@@ -2803,3 +2803,31 @@ def reorderLogFiles(logs):
     o = letterLogs + digitLogs
     return o
 
+
+# Meeting Rooms I
+# Given intervals, see if person can attend ALL meetings
+#
+# Sort by start time. and check violating condition
+# If a meeting ends at x and another starts at x, he can attend (TRUE)
+def canAttendMeetings(intervals):
+    intervals.sort(key = lambda x:x[0])
+    
+    stack = []
+    if intervals:
+        stack.append(intervals[0])
+    else:
+        return True
+    
+    for i in range(1, len(intervals)):
+        start = intervals[i][0]
+        end = intervals[i][1]
+        
+        tos_start = stack[-1][0]
+        tos_end = stack[-1][1]
+        
+        if tos_end > end or (tos_start <= start < tos_end):
+            return False
+        
+        stack.append(intervals[i])
+    
+    return True
