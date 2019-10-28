@@ -2782,3 +2782,24 @@ def trappingRainWater(height):
             volume += r_max - height[right]
             right -= 1
     return volume
+
+# Reorder data in log files
+# input: logs = ["dig1 8 1 5 1","let1 art can","dig2 3 6","let2 own kit dig","let3 art zero"]
+# out: ["let1 art can","let3 art zero","let2 own kit dig","dig1 8 1 5 1","dig2 3 6"]
+#
+# To sort with a tiebreaker, use a tuple for the lambda in sort()
+def reorderLogFiles(logs):
+    letterLogs = []
+    digitLogs = []
+    o = []
+    
+    for log in logs:
+        if log.split()[1].isdigit():
+            digitLogs.append(log)
+        else:
+            letterLogs.append(log)
+    # First, sort by everything apart from the identifier, then sort by identifier
+    letterLogs.sort(key = lambda x: (x.split()[1:], x[0]))
+    o = letterLogs + digitLogs
+    return o
+
