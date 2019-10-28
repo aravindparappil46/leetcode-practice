@@ -786,7 +786,8 @@ def mergeIntervals(arr):
     for pairs in stack:
         print(pairs)
 
-arr = [(10,11), (6,9), (1,3), (2,5), (7,8)]
+#arr = [(10,11), (6,9), (1,3), (2,5), (7,8)]
+arr = [(0,30), (5,10), (15,20)]
 # mergeIntervals(arr)
 
 # 9. LCA in BST
@@ -2727,7 +2728,7 @@ def isGoal(board, player):
 #    O(V+E) to create each course node and add each edge.
 #    Traversing graph: O(V+E) to visit each node and check each edge exactly once.
 # Overall ==> O(N)
-def courseSchedule(numCourses,  prerequisites: List[List[int]]):
+def courseSchedule(numCourses,  prerequisites):
     graph = [[] for x in range(numCourses)]
     visited = [0 for x in range(numCourses)]
     
