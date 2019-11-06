@@ -2832,3 +2832,42 @@ def canAttendMeetings(intervals):
         stack.append(intervals[i])
     
     return True
+
+
+# Prison cell after N days
+# If adjacent cells are same, occupy it (change to 1). If not, 0
+#
+# Keep track of history of cell states and if same
+# state repeated, then reduce N by the mod of whatever N was seen earlier
+
+def prisonAfterNDays(self, cells: List[int], N: int) -> List[int]:
+    history = {}
+    while N:
+        
+        toOccupy = []
+        toVacate = []
+        history[str(cells)] = N
+        N = N - 1
+        for idx, cell in enumerate(cells):
+            if idx == 0 or idx == len(cells) - 1:
+                if cell == 1:
+                    toVacate.append(idx)
+            else:
+                if cells[idx + 1] == cells[idx - 1]:
+                    toOccupy.append(idx)
+                else:
+                    toVacate.append(idx)
+        cells = self.flipCells(cells, toOccupy, toVacate)
+        
+        # If state already seen, reduce N by mod of earlier state
+        if str(cells) in history:
+            N %= history[str(cells)] - N
+            
+    return cells
+        
+def flipCells(self, cells, toOccupy, toVacate):
+    for idx in toOccupy:
+        cells[idx] = 1
+    for idx in toVacate:
+        cells[idx] = 0
+    return cells
