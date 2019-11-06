@@ -2871,3 +2871,33 @@ def flipCells(self, cells, toOccupy, toVacate):
     for idx in toVacate:
         cells[idx] = 0
     return cells
+
+# Meeting Rooms II /meetingRoomsII
+# Given time slots, return how many rooms needed
+#
+# Only keep track of end times in a heap
+# If curr slot doesn't overlap, update heap with curr end time
+#
+# Time Complexity => O(NlogN) //sorting and extract min takes log N
+# Space => O(N) for heap
+def minMeetingRooms(intervals):
+    if intervals:
+        intervals.sort(key = lambda x:x[0])
+    else:
+        return 0
+    
+    heap = []
+    heapq.heappush(heap, intervals[0][1]) # add end time
+    
+    for slot in intervals[1:]:
+        curr_start = slot[0]
+        curr_end = slot[1]
+        # If no overlap, pop from heap and update end time
+        if curr_start >= heap[0]:
+            heapq.heappop(heap)
+            heapq.heappush(heap, curr_end)
+        else: # yes this can be avoided -_- but keeping for clarity
+            heapq.heappush(heap, curr_end)
+    
+    return len(heap)
+    
