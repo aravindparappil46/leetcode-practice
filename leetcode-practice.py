@@ -2900,4 +2900,44 @@ def minMeetingRooms(intervals):
             heapq.heappush(heap, curr_end)
     
     return len(heap)
+
+# Word Ladder / wordLadder
+# Given beginWord and endWord and list of words, 
+# return shortest path from begin to end by changing one char of beginWord
+#
+# Do BFS. First, preprocess all words such that * indicates letter that has changed 
+# Put them into a dict where values will be the original words which map to the same preprocessed word
+# Now, starting from beginWord, we make changes to each letter and get a new word (currWord)
+# Preprocess currWord and see if it's present in the dict, 
+# If yes, check all the original words for that preprocessed word
+def ladderLength(beginWord, endWord, wordList):
+    preprocessDict = defaultdict(list)
     
+    # Preprocessing
+    # dog => [ "*og", "d*g", "do*" ]
+    for word in wordList:
+        for i in range(len(word)):
+            preprocessed = word[:i] + '*' + word[i+1:]
+            preprocessDict[preprocessed].append(word)
+    
+    queue = [(beginWord, 1)]
+    visited = [] # To avoid cycles
+    
+    while queue:
+        currWord, level = queue.pop(0)
+        # check if currWord in dict. If yes, check if 
+        # any of the values of the dict element is our target
+        # i.e., any of the preprocessed word matches the preprocessing of currWord
+        for i in range(len(currWord)):
+            preprocessed = currWord[:i] + '*' + currWord[i+1:]
+            if preprocessed in preprocessDict:
+                for word in preprocessDict[preprocessed]:
+                    if word == endWord:
+                        return level + 1
+                    else:
+                        if word not in visited:
+                            visited.append(word)
+                            queue.append((word, level+1))
+                # Once we are done with a word, remove it from dict to speed up further iterations
+                del preprocessDict[preprocessed] 
+    return 0
