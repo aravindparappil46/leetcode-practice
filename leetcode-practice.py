@@ -2941,3 +2941,48 @@ def ladderLength(beginWord, endWord, wordList):
                 # Once we are done with a word, remove it from dict to speed up further iterations
                 del preprocessDict[preprocessed] 
     return 0
+
+
+# Find median in data stream
+#
+# Use 2 heaps, min and max heaps 
+# Max stores all smaller nums and min stores all larger nums
+# Always, the difference in num of elements between them shud be 1
+# If not, pop from larger heap and push into the smaller one
+#
+# If both heap perfectly balanced, median will be avg of heads
+# else, itll be head of which ever is larger
+# Time Complexity O(logN) for adding .. O(1) for finding median
+class MedianFinder:
+
+    def __init__(self):
+        self.max_heap = []
+        self.min_heap = []
+        
+    def addNum(self, num: int) -> None:
+        
+        if len(self.max_heap) == 0:
+            heapq.heappush(self.max_heap, -num)
+            return 
+        
+        if num <= -self.max_heap[0]:
+            heapq.heappush(self.max_heap, -num)
+        else:
+            heapq.heappush(self.min_heap, num)
+        
+        # max_heap is larger by 2
+        if len(self.max_heap) - len(self.min_heap) == 2:
+            largest = heapq.heappop(self.max_heap)
+            heapq.heappush(self.min_heap, -largest)
+        
+        # min_heap is larger by 2
+        elif len(self.max_heap) - len(self.min_heap) == -2:
+            smallest = heapq.heappop(self.min_heap)
+            heapq.heappush(self.max_heap, -smallest)
+            
+       
+    def findMedian(self) -> float:
+        if len(self.max_heap) == len(self.min_heap):
+            return (self.min_heap[0] - self.max_heap[0])/2.0
+        
+        return -float(self.max_heap[0]) if len(self.max_heap) > len(self.min_heap) else float(self.min_heap[0])
