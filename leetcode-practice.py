@@ -2986,3 +2986,36 @@ class MedianFinder:
             return (self.min_heap[0] - self.max_heap[0])/2.0
         
         return -float(self.max_heap[0]) if len(self.max_heap) > len(self.min_heap) else float(self.min_heap[0])
+
+
+# Flatten nested list iterator
+# getList() returns nested list from that object 
+#
+# Keep a stack and pop out only inner lists
+# push each individual integers from those lists back to stack
+# so that when next() is called, they will be returned first
+#
+# Your NestedIterator object will be instantiated and called as such:
+# i, v = NestedIterator(nestedList), []
+# while i.hasNext(): v.append(i.next())
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        self.stack = nestedList[::-1]   
+
+    def next(self):
+        return self.stack.pop().getInteger()
+
+    def hasNext(self):
+        if len(self.stack) == 0:
+            return False
+
+        while not self.stack[-1].isInteger():            
+            nestedList = self.stack.pop().getList()[::-1]
+            for integer in nestedList:
+                self.stack.append(integer)
+                
+            if not self.stack:
+                return False
+            
+        return True
