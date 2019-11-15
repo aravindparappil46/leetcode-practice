@@ -3019,3 +3019,30 @@ class NestedIterator(object):
                 return False
             
         return True
+
+# Search for element in a matrix
+# Row sorted left to right, col sorted top to bottom
+#
+# Set (row,col) ptr to bottom left, 
+# if curr < target, move right one column
+# if curr > target, move up one row (as smaller elements will be above)
+# Time Complexity O(m + n) where m is num of rows and n is num of cols
+# Each time we are only incrementing or decrmenting one of row or col
+
+def searchMatrixII(matrix, target):
+    if not matrix:
+        return False
+
+    row = len(matrix)-1
+    col = 0
+
+    while row >= 0 and col < len(matrix[0]):
+        if matrix[row][col] > target:
+            row -= 1
+        elif matrix[row][col] < target:
+            col += 1
+        else:
+            return True
+
+    return False
+            
