@@ -4,12 +4,14 @@ from collections import defaultdict
 import re
 from collections import deque
 
-print(int(not 0))
 
-nestedList = [1,2,3,4]
-stack = []
+n = 3
 
-for i in range(len(nestedList) - 1, -1, -1):
-        stack.append(nestedList[i])
+rows = [0] *n
 
-print(stack)
+rows[0]+= 1
+rows[1] += 1
+rows[2] += 1
+print(n == rows[1])
+
+print(rows)

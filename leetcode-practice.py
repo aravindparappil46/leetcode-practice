@@ -3045,4 +3045,42 @@ def searchMatrixII(matrix, target):
             return True
 
     return False
+
+
+# Design Tic Tac Toe // tictactoe
+#
+# Keep arrays for rowSum and colSum, keep a var for diagSum and antiDiagSum
+# If player 1 makes a move, add +1
+# If player 2 makes a move, add -1
+# If move is in a diag (row==sum), add to diagSum
+# If move is in antiDiag, add to antiDiag (check antiDiag using row == n-1-col)
+# At any point, we are only checking the row/col/diags where a move was made
+# So if abs(sum) of those are equal to boardSize, we have a winner
+#
+# Time Complexity for move = O(1)
+# Space = O(n)
+
+class TicTacToe(object):
+
+    def __init__(self, n):
+        self.rows = [0] * n
+        self.cols = [0] * n
+        self.diagSum = 0
+        self.antiDiagSum = 0
+        self.n = n
+        
+    def move(self, row, col, player):
+        marker = 1 if player == 1 else -1
+        self.rows[row] += marker
+        self.cols[col] += marker
+        
+        if row == col:
+            self.diagSum += marker
             
+        if row == self.n-1-col:
+            self.antiDiagSum += marker
+        
+        if abs(self.rows[row]) == self.n or abs(self.cols[col]) == self.n or abs(self.diagSum) == self.n or abs(self.antiDiagSum) == self.n:
+            return player
+        
+        return 0
