@@ -3020,7 +3020,7 @@ class NestedIterator(object):
             
         return True
 
-# Search for element in a matrix
+# Search for element in a matrix II
 # Row sorted left to right, col sorted top to bottom
 #
 # Set (row,col) ptr to bottom left, 
