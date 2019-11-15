@@ -3053,7 +3053,7 @@ def searchMatrixII(matrix, target):
 # If player 1 makes a move, add +1
 # If player 2 makes a move, add -1
 # If move is in a diag (row==sum), add to diagSum
-# If move is in antiDiag, add to antiDiag (check antiDiag using row == n-1-col)
+# If move is in antiDiag, add to antiDiagSum (check antiDiag using row == n-1-col)
 # At any point, we are only checking the row/col/diags where a move was made
 # So if abs(sum) of those are equal to boardSize, we have a winner
 #
@@ -3063,8 +3063,8 @@ def searchMatrixII(matrix, target):
 class TicTacToe(object):
 
     def __init__(self, n):
-        self.rows = [0] * n
-        self.cols = [0] * n
+        self.rows = [0] * n # rowSum
+        self.cols = [0] * n # colSum
         self.diagSum = 0
         self.antiDiagSum = 0
         self.n = n
@@ -3084,3 +3084,30 @@ class TicTacToe(object):
             return player
         
         return 0
+
+
+# Binary Tree Zig zag traversal
+# Do bfs..for odd levels, reverse the list
+def zigzagLevelOrder(root):
+    if not root:
+        return None
+    queue = [(root,0)]
+    levels = []
+    
+    while queue:
+        levels.append([])
+        for i in range(len(queue)):
+            node, level = queue.pop(0)
+            levels[level].append(node.val)
+
+            if node.left:
+                queue.append((node.left,level+1))
+            if node.right:
+                queue.append((node.right,level+1))
+
+    # Reversing the lists AFTER BFS is done
+    for idx, level in enumerate(levels):
+        if idx % 2 != 0:
+            levels[idx].reverse()
+    
+    return levels
