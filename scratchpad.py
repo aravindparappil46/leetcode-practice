@@ -7,11 +7,10 @@ from collections import deque
 
 n = 3
 
-rows = [0] *n
+r = [22,6,7,5,8]
+o = [8,2,111,11111]
 
-rows[0]+= 1
-rows[1] += 1
-rows[2] += 1
-print(n == rows[1])
 
-print(rows)
+for idx, rr in enumerate(reversed(r)):
+	print(rr)
+

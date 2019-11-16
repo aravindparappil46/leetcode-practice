@@ -3111,3 +3111,80 @@ def zigzagLevelOrder(root):
             levels[idx].reverse()
     
     return levels
+
+
+# Boundary Traversal of Binary Tree //boundaryOfTree
+# Do 2 DFS Partially 
+#   - one to go left alone (break when leaf found)
+#   - one to go right alone (break when leaf found)
+# Another DFS completely to find leaves
+# 
+# Time Complexity = Same as DFS
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        if not root:
+            return None
+        
+        queue = [(root,0)]
+        stack = [root]
+        levels, o, left, leaves, right = [], [], [], [], []
+        #DFS for right boundary
+        if root.right:
+            while stack:
+                node = stack.pop()
+                right.append(node.val)
+                if node.left:
+                    stack.append(node.left)
+                if node.right:
+                    stack.append(node.right)
+                if not node.left and not node.right:
+                    break 
+                    
+        #DFS for left boundary       
+        if root.left:
+            stack = [root]
+            while stack:
+                node = stack.pop()
+                left.append(node.val)
+                if node.right:
+                    stack.append(node.right)
+                if node.left:
+                    stack.append(node.left)
+                if not node.left and not node.right:
+                    break
+        
+        # DFS to find leaves
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+            if not node.left and not node.right and node != root:
+                leaves.append(node.val)
+                
+        o = [root.val] # Final output
+        
+        # Adding all left boundaries, apart from root, to output
+        for lefts in left[1:]:
+            o.append(lefts)
+        
+        # Adding the leaves
+        # Only the joining point should not be same, rest can 
+        # have duplicates
+        for idx, leaf in enumerate(leaves):
+            if root.left:
+                if idx == 0 and leaf == o[-1]:
+                    continue
+            o.append(leaf)
+        
+        # Adding the right boundaries (MUST REVERSE the order)
+        # Again, only the joining point shud not be duplicate
+        for idx, rights in enumerate(reversed(right[1:])):
+            if root.right:
+                if idx == 0 and rights == o[-1]:
+                    continue
+            o.append(rights)
+        
+        return o
