@@ -3125,7 +3125,6 @@ class Solution(object):
         if not root:
             return None
         
-        queue = [(root,0)]
         stack = [root]
         levels, o, left, leaves, right = [], [], [], [], []
         #DFS for right boundary
