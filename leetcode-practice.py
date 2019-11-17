@@ -3195,7 +3195,7 @@ class Solution(object):
 #
 #
 # Do BFS with visited array and directions array (all 8 possible directions)
-def shortestPathBinaryMatrix(self, grid):
+def shortestPathBinaryMatrix(grid):
     # First & last spot shud always be vacant
     if grid[0][0] == 1 or grid[-1][-1]: 
         return -1
@@ -3222,3 +3222,29 @@ def shortestPathBinaryMatrix(self, grid):
                 queue.append((new_r, new_c, pathLength + 1))
     
     return -1 # Not possible at all
+
+# Longest Absolute File path
+# Given tab separated file path, find len of longest file path
+# dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext
+#
+# Split by \n to get tokens (can be dir or file)
+# The depth of the token is how many \t are there (count it!)
+# Keep a dict with depth as key and length at that depth
+#
+# Time Complexity => O(N)
+def lengthLongestPath(input):
+    max_length = 0
+    depth_len_dict = {-1:0}
+    
+    for token in input.split("\n"):
+        curr_depth = token.count("\t")
+        prev_depth = curr_depth - 1
+        token_len = len(token.lstrip()) # token has tab chars, remove it to get actual len
+        
+        # Depth of curr token is prev depth + it's length
+        depth_len_dict[curr_depth] = depth_len_dict[prev_depth] + token_len
+        
+        if '.' in token:
+            max_length = max(max_length, depth_len_dict[curr_depth] + curr_depth)
+    
+    return max_length
