@@ -3187,3 +3187,38 @@ class Solution(object):
             o.append(rights)
         
         return o
+
+
+# Shortest path in binary matrix
+# Matrix is filled with zeros and ones, find shortest path length
+# from top left to bottom right.. 0 means vacant, 1 means occupied
+#
+#
+# Do BFS with visited array and directions array (all 8 possible directions)
+def shortestPathBinaryMatrix(self, grid):
+    # First & last spot shud always be vacant
+    if grid[0][0] == 1 or grid[-1][-1]: 
+        return -1
+    
+    rows = len(grid)
+    cols = len(grid[0])
+    
+    queue = [(0,0,1)] # (row, col, path_length)
+    directions = [(0,1), (1,0), (1,1), (0,-1), (-1,0), (-1,-1), (1,-1), (-1,1)] # 8 directions
+    visited = set()
+    
+    while queue:
+        r, c, pathLength = queue.pop(0)
+        if r == rows-1 and c == cols-1:
+            return pathLength
+        
+        for dx, dy in directions:
+            new_r = r + dx
+            new_c = c + dy
+            if 0 <= new_r < rows and 0 <= new_c < cols \
+            and (new_r, new_c) not in visited \
+            and not grid[new_r][new_c]:
+                visited.add((new_r, new_c))
+                queue.append((new_r, new_c, pathLength + 1))
+    
+    return -1 # Not possible at all
