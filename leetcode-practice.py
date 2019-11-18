@@ -3248,3 +3248,28 @@ def lengthLongestPath(input):
             max_length = max(max_length, depth_len_dict[curr_depth] + curr_depth)
     
     return max_length
+
+# Given two string rep of integers, add those of same position
+# "99" + "99" = "1818"
+# "99" + "9" = "918"
+# Pad 0s to start of smaller string and then add
+# Quora
+def stringAddition(a, b):
+    longest = a if len(a) > len(b) else b
+
+    if len(a) > len(b):
+        diff = len(a) - len(b)
+        pad = '0'*diff
+        b = str(pad) + b
+    else:
+        diff = len(b) - len(a)
+        pad = '0'*diff
+        a = str(pad) + a
+
+    o = ''
+    for i in range(len(a)):
+        i1 = int(a[i])
+        i2 = int(b[i])
+        o += str(i1+i2)
+
+    return o
