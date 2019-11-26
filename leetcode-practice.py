@@ -2574,15 +2574,15 @@ def reverseList(head):
     return prev
 
 # Reverse linked list / linkedlist RECURSIVE
- def reverseListRecursive(self, head):
-        return self.reverseHelp(head)
+def reverseListRecursive(head):
+    return reverseHelp(head)
 
-    def reverseHelp(self, node, prev = None):
-        if not node:
-            return prev
-        n = node.next
-        node.next = prev
-        return self.reverseHelp(n, node)
+def reverseHelp(node, prev = None):
+    if not node:
+        return prev
+    n = node.next
+    node.next = prev
+    return reverseHelp(n, node)
 
 # Get intersection of Linked Lists
 #
