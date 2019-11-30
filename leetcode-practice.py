@@ -2571,8 +2571,18 @@ def reverseList(head):
             
         prev = head
         head = temp
-
     return prev
+
+# Reverse linked list / linkedlist RECURSIVE
+def reverseListRecursive(head):
+    return reverseHelp(head)
+
+def reverseHelp(node, prev = None):
+    if not node:
+        return prev
+    n = node.next
+    node.next = prev
+    return reverseHelp(n, node)
 
 # Get intersection of Linked Lists
 #
@@ -3052,3 +3062,258 @@ arr2 = [8, 10, 20, 80, 100, 200, 400, 500, 3, 2, 1]
 # print(findMaxElement(arr, 0, len(arr)-1))
 # print(findMaxElement2(arr2))
 
+
+# Search for element in a matrix II
+# Row sorted left to right, col sorted top to bottom
+#
+# Set (row,col) ptr to bottom left, 
+# if curr < target, move right one column
+# if curr > target, move up one row (as smaller elements will be above)
+# Time Complexity O(m + n) where m is num of rows and n is num of cols
+# Each time we are only incrementing or decrmenting one of row or col
+
+def searchMatrixII(matrix, target):
+    if not matrix:
+        return False
+
+    row = len(matrix)-1
+    col = 0
+
+    while row >= 0 and col < len(matrix[0]):
+        if matrix[row][col] > target:
+            row -= 1
+        elif matrix[row][col] < target:
+            col += 1
+        else:
+            return True
+
+    return False
+
+
+# Design Tic Tac Toe // tictactoe
+#
+# Keep arrays for rowSum and colSum, keep a var for diagSum and antiDiagSum
+# If player 1 makes a move, add +1
+# If player 2 makes a move, add -1
+# If move is in a diag (row==sum), add to diagSum
+# If move is in antiDiag, add to antiDiagSum (check antiDiag using row == n-1-col)
+# At any point, we are only checking the row/col/diags where a move was made
+# So if abs(sum) of those are equal to boardSize, we have a winner
+#
+# Time Complexity for move = O(1)
+# Space = O(n)
+
+class TicTacToe(object):
+
+    def __init__(self, n):
+        self.rows = [0] * n # rowSum
+        self.cols = [0] * n # colSum
+        self.diagSum = 0
+        self.antiDiagSum = 0
+        self.n = n
+        
+    def move(self, row, col, player):
+        marker = 1 if player == 1 else -1
+        self.rows[row] += marker
+        self.cols[col] += marker
+        
+        if row == col:
+            self.diagSum += marker
+            
+        if row == self.n-1-col:
+            self.antiDiagSum += marker
+        
+        if abs(self.rows[row]) == self.n or abs(self.cols[col]) == self.n or abs(self.diagSum) == self.n or abs(self.antiDiagSum) == self.n:
+            return player
+        
+        return 0
+
+
+# Binary Tree Zig zag traversal
+# Do bfs..for odd levels, reverse the list
+def zigzagLevelOrder(root):
+    if not root:
+        return None
+    queue = [(root,0)]
+    levels = []
+    
+    while queue:
+        levels.append([])
+        for i in range(len(queue)):
+            node, level = queue.pop(0)
+            levels[level].append(node.val)
+
+            if node.left:
+                queue.append((node.left,level+1))
+            if node.right:
+                queue.append((node.right,level+1))
+
+    # Reversing the lists AFTER BFS is done
+    for idx, level in enumerate(levels):
+        if idx % 2 != 0:
+            levels[idx].reverse()
+    
+    return levels
+
+
+# Boundary Traversal of Binary Tree //boundaryOfTree
+# Do 2 DFS Partially 
+#   - one to go left alone (break when leaf found)
+#   - one to go right alone (break when leaf found)
+# Another DFS completely to find leaves
+# 
+# Time Complexity = Same as DFS
+class Solution(object):
+    def boundaryOfBinaryTree(self, root):
+        if not root:
+            return None
+        
+        stack = [root]
+        levels, o, left, leaves, right = [], [], [], [], []
+        #DFS for right boundary
+        if root.right:
+            while stack:
+                node = stack.pop()
+                right.append(node.val)
+                if node.left:
+                    stack.append(node.left)
+                if node.right:
+                    stack.append(node.right)
+                if not node.left and not node.right:
+                    break 
+                    
+        #DFS for left boundary       
+        if root.left:
+            stack = [root]
+            while stack:
+                node = stack.pop()
+                left.append(node.val)
+                if node.right:
+                    stack.append(node.right)
+                if node.left:
+                    stack.append(node.left)
+                if not node.left and not node.right:
+                    break
+        
+        # DFS to find leaves
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+            if not node.left and not node.right and node != root:
+                leaves.append(node.val)
+                
+        o = [root.val] # Final output
+        
+        # Adding all left boundaries, apart from root, to output
+        for lefts in left[1:]:
+            o.append(lefts)
+        
+        # Adding the leaves
+        # Only the joining point should not be same, rest can 
+        # have duplicates
+        for idx, leaf in enumerate(leaves):
+            if root.left:
+                if idx == 0 and leaf == o[-1]:
+                    continue
+            o.append(leaf)
+        
+        # Adding the right boundaries (MUST REVERSE the order)
+        # Again, only the joining point shud not be duplicate
+        for idx, rights in enumerate(reversed(right[1:])):
+            if root.right:
+                if idx == 0 and rights == o[-1]:
+                    continue
+            o.append(rights)
+        
+        return o
+
+
+# Shortest path in binary matrix
+# Matrix is filled with zeros and ones, find shortest path length
+# from top left to bottom right.. 0 means vacant, 1 means occupied
+#
+#
+# Do BFS with visited array and directions array (all 8 possible directions)
+def shortestPathBinaryMatrix(grid):
+    # First & last spot shud always be vacant
+    if grid[0][0] == 1 or grid[-1][-1]: 
+        return -1
+    
+    rows = len(grid)
+    cols = len(grid[0])
+    
+    queue = [(0,0,1)] # (row, col, path_length)
+    directions = [(0,1), (1,0), (1,1), (0,-1), (-1,0), (-1,-1), (1,-1), (-1,1)] # 8 directions
+    visited = set()
+    
+    while queue:
+        r, c, pathLength = queue.pop(0)
+        if r == rows-1 and c == cols-1:
+            return pathLength
+        
+        for dx, dy in directions:
+            new_r = r + dx
+            new_c = c + dy
+            if 0 <= new_r < rows and 0 <= new_c < cols \
+            and (new_r, new_c) not in visited \
+            and not grid[new_r][new_c]:
+                visited.add((new_r, new_c))
+                queue.append((new_r, new_c, pathLength + 1))
+    
+    return -1 # Not possible at all
+
+# Longest Absolute File path
+# Given tab separated file path, find len of longest file path
+# dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext
+#
+# Split by \n to get tokens (can be dir or file)
+# The depth of the token is how many \t are there (count it!)
+# Keep a dict with depth as key and length at that depth
+#
+# Time Complexity => O(N)
+def lengthLongestPath(input):
+    max_length = 0
+    depth_len_dict = {-1:0}
+    
+    for token in input.split("\n"):
+        curr_depth = token.count("\t")
+        prev_depth = curr_depth - 1
+        token_len = len(token.lstrip()) # token has tab chars, remove it to get actual len
+        
+        # Depth of curr token is prev depth + it's length
+        depth_len_dict[curr_depth] = depth_len_dict[prev_depth] + token_len
+        
+        if '.' in token:
+            max_length = max(max_length, depth_len_dict[curr_depth] + curr_depth)
+    
+    return max_length
+
+# Given two string rep of integers, add those of same position
+# "99" + "99" = "1818"
+# "99" + "9" = "918"
+# Pad 0s to start of smaller string and then add
+# Quora
+def stringAddition(a, b):
+    longest = a if len(a) > len(b) else b
+
+    if len(a) > len(b):
+        diff = len(a) - len(b)
+        pad = '0'*diff
+        b = str(pad) + b
+    else:
+        diff = len(b) - len(a)
+        pad = '0'*diff
+        a = str(pad) + a
+
+    o = ''
+    for i in range(len(a)):
+        i1 = int(a[i])
+        i2 = int(b[i])
+        o += str(i1+i2)
+
+    return o
+    
