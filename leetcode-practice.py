@@ -2840,7 +2840,7 @@ def canAttendMeetings(intervals):
 # Keep track of history of cell states and if same
 # state repeated, then reduce N by the mod of whatever N was seen earlier
 
-def prisonAfterNDays(self, cells: List[int], N: int) -> List[int]:
+def prisonAfterNDays(self, cells, N: int):
     history = {}
     while N:
         
@@ -3019,3 +3019,36 @@ class NestedIterator(object):
                 return False
             
         return True
+
+
+# Find max element in array which increases and then decreases
+# Binary search modified
+# O(log N)
+def findMaxElement(arr, lo, hi):
+    mid = (lo + hi) // 2
+    # Found the peak
+    if arr[mid-1] < arr[mid] > arr[mid+1]:
+        return arr[mid]
+
+    if arr[mid] > arr[mid+1] and arr[mid] < arr[mid-1]:
+        return findMaxElement(arr, lo, mid-1)
+
+    else:
+        return findMaxElement(arr, mid+1, hi)
+
+# With slow and fast ptrs
+def findMaxElement2(arr):
+    s = 0
+    f = 1
+    while f != len(arr) - 1:
+        if arr[s] < arr[f]:
+            s += 1
+        else:
+            return arr[s]
+        f += 1
+
+arr = [1,3,50,10,9,7,6]
+arr2 = [8, 10, 20, 80, 100, 200, 400, 500, 3, 2, 1]
+# print(findMaxElement(arr, 0, len(arr)-1))
+# print(findMaxElement2(arr2))
+
