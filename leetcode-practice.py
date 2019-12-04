@@ -404,7 +404,7 @@ def twoSum1(a, target):
 
 a1 = [6,6,3,9,3,5,12]
 a = [7,8,13,20,12,12,6,1,11]
-# print(twoSum1(a1,12))
+print(twoSum1(a1,12))
 
 # max depth of tree
 def maxDepth(node): 
@@ -864,10 +864,10 @@ if __name__ == '__main__':
     node2 = obj.convert_num_to_node(465)
     #print(obj.addTwoNumbers(node1, node2))
 
-# 11. Given stream of numbers, find unique numbers till that point
+# 11. Given stream of chars, find unique chars till that point
 # Find first non repeating character in stream
 def uniqueInStream(s):
-    inDLL = []* 256
+    inDLL = []
     repeated = [False] * 256
     for i in range(len(s)):
         x = s[i]
@@ -881,7 +881,7 @@ def uniqueInStream(s):
             print('First non repeating char so far: ', inDLL[0])
 
 s = 'thisisthisah'
-#uniqueInStream(s)
+uniqueInStream(s)
 
 # Find first non repeating character in string
 # ONE PASS!
@@ -2565,7 +2565,7 @@ def reverseList(head):
     while head:
         temp = head.next
         if prev == None:
-            head.next = None  
+            head.next = None
         else:
             head.next = prev
             
@@ -2850,7 +2850,7 @@ def canAttendMeetings(intervals):
 # Keep track of history of cell states and if same
 # state repeated, then reduce N by the mod of whatever N was seen earlier
 
-def prisonAfterNDays(self, cells: List[int], N: int) -> List[int]:
+def prisonAfterNDays(self, cells, N: int):
     history = {}
     while N:
         
