@@ -3030,6 +3030,39 @@ class NestedIterator(object):
             
         return True
 
+
+# Find max element in array which increases and then decreases
+# Binary search modified
+# O(log N)
+def findMaxElement(arr, lo, hi):
+    mid = (lo + hi) // 2
+    # Found the peak
+    if arr[mid-1] < arr[mid] > arr[mid+1]:
+        return arr[mid]
+
+    if arr[mid] > arr[mid+1] and arr[mid] < arr[mid-1]:
+        return findMaxElement(arr, lo, mid-1)
+
+    else:
+        return findMaxElement(arr, mid+1, hi)
+
+# With slow and fast ptrs
+def findMaxElement2(arr):
+    s = 0
+    f = 1
+    while f != len(arr) - 1:
+        if arr[s] < arr[f]:
+            s += 1
+        else:
+            return arr[s]
+        f += 1
+
+arr = [1,3,50,10,9,7,6]
+arr2 = [8, 10, 20, 80, 100, 200, 400, 500, 3, 2, 1]
+# print(findMaxElement(arr, 0, len(arr)-1))
+# print(findMaxElement2(arr2))
+
+
 # Search for element in a matrix II
 # Row sorted left to right, col sorted top to bottom
 #
@@ -3283,3 +3316,4 @@ def stringAddition(a, b):
         o += str(i1+i2)
 
     return o
+    
