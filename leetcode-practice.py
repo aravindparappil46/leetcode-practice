@@ -404,7 +404,7 @@ def twoSum1(a, target):
 
 a1 = [6,6,3,9,3,5,12]
 a = [7,8,13,20,12,12,6,1,11]
-print(twoSum1(a1,12))
+# print(twoSum1(a1,12))
 
 # max depth of tree
 def maxDepth(node): 
@@ -881,7 +881,7 @@ def uniqueInStream(s):
             print('First non repeating char so far: ', inDLL[0])
 
 s = 'thisisthisah'
-uniqueInStream(s)
+# uniqueInStream(s)
 
 # Find first non repeating character in string
 # ONE PASS!
@@ -3317,3 +3317,68 @@ def stringAddition(a, b):
 
     return o
     
+
+# Almost sorted array. Find mis-sorted elements
+def almostSorted(arr):
+    x = y = -1
+    for i in range(len(arr)-1):
+        if arr[i+1] < arr[i]:
+            x = arr[i]
+            y = arr[i+1]
+            break
+    return x, y
+
+arr = [1,2,4,3]
+# print(almostSorted(arr))
+
+# Recover Binary Search Tree
+# Two element in BST is misplaced. Swap them and make BST valid
+#
+# Inorder traversal of BST gives sorted array
+# Since 2 elements are misplaced, the array also will have 2 elements misplaced
+# So, find the 2 elements in that array and keep
+# Then, do DFS to iterate over tree...if any of those 2 ele found, swap value
+# Time Complexity = O(N)
+# Space Complexity = O(N) for misplacedArray of N items
+
+class Solution:
+    def recoverTree(self, root):
+        def inorder(root):
+            o = []
+            stack = []
+            curr = root
+            while stack or curr != None:
+                while curr!= None:
+                    stack.append(curr)
+                    curr = curr.left
+                curr = stack.pop()
+                o.append(curr.val)
+                curr = curr.right
+            return o
+    
+        def findMisplaced(arr):
+            x = y = -1
+            for i in range(len(arr)-1):
+                if arr[i+1] < arr[i]:
+                    y = arr[i+1]
+                    if x == -1:
+                         x = arr[i]
+                    else:
+                        break
+            return x,y
+        
+        # DFS and swap if element found
+        def fixTree(r, c):
+            stack = [r]
+            while stack:
+                node = stack.pop()
+                if node.val == x or node.val == y:
+                    node.val = y if node.val == x else x
+                if node.right:
+                    stack.append(node.right)
+                if node.left:
+                    stack.append(node.left)
+        
+        misplacedArray = inorder(root)
+        x,y = findMisplaced(misplacedArray)
+        fixTree(root,2)
