@@ -3382,3 +3382,63 @@ class Solution:
         misplacedArray = inorder(root)
         x,y = findMisplaced(misplacedArray)
         fixTree(root,2)
+
+
+# Basic Calculator III
+# String will have () and operators
+# 
+# Keep a stack, num (intermediate res), and do eager evaluation (eval whenever possible)
+# i.e., if operator is * or / evaluate with next number immediately coz precedence
+# Keep appending to stack ONLY numbers and operators
+# When closing bracket seen, pop till we reach an operator & keep adding to num
+# Afterwards, just call eval function with that num and op
+class BasicCalculatorIII:
+    def calculate(self, s: str) -> int:
+        s = re.sub(" ", "", s)
+            
+        stack = []
+        num = 0
+        op = "+" # default operation is to add
+     
+        # This method evals curr num with curr operator
+        def expEval(op, num):
+            if op == "+":
+                stack.append(num)
+            elif op == "-":
+                stack.append(-num)
+            elif op == "*":
+                stack.append(stack.pop()*num)
+            elif op == "/":
+                stack.append(int(stack.pop()/num))
+        
+        for i in range(len(s)):
+            # If more than one digit number, use math to form the num
+            if s[i].isdigit():
+                num = num * 10 + int(s[i])
+            
+            elif s[i] == "(":
+                stack.append(op)
+                num = 0
+                op = "+"
+            
+            elif s[i] in ["+", "-", "*", "/", ")"]:
+                expEval(op, num)
+                
+                if s[i] == ")":
+                    num = 0
+                    # Pop till we reach an operator at tos
+                    while isinstance(stack[-1], int):
+                        num += stack.pop()
+                    
+                    # We reached an operator, evaluate curr num with that
+                    op = stack.pop()
+                    expEval(op, num)
+                
+                # Set op as what we saw latest
+                op = s[i]
+                num = 0
+                
+        # This evals the last digit
+        expEval(op, num)
+        # Whatever is left in stack is the result
+        return sum(stack)
