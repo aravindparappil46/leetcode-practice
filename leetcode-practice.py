@@ -3442,3 +3442,44 @@ class BasicCalculatorIII:
         expEval(op, num)
         # Whatever is left in stack is the result
         return sum(stack)
+
+
+
+# Path Sum III
+# Find path in tree (does not have to start from root and end in leaf) which equals target
+#
+# Keep a dict of key = sum_so_far and val = num of ways to reach it (how many times it was seen)
+# Keep track of currSum = prevSum + node.val
+# If currSum - target is in dict, that means there is a way to reach target. So increment count
+# DFS returns that count
+# Then do dfs with left child and right child which also returns count for those paths
+
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> int:
+        cache = {0:1} # 1 way to get sum == 0. Dummy initialization
+        
+        def dfs(root, prevSum, target):
+            if not root:
+                return 0
+            
+            count = 0 # we shud return this
+            currSum = prevSum + root.val
+            
+            if currSum - target in cache:
+                count += cache[currSum-target]
+            
+            # This sum already seen.. so increment its num of ways
+            if currSum in cache:
+                cache[currSum] += 1
+            
+            # Seeing this sum for first time
+            else:
+                cache[currSum] = 1
+            
+            count += dfs(root.left, currSum, target)
+            count += dfs(root.right, currSum, target)
+            cache[currSum] -= 1
+            
+            return count
+        
+        return dfs(root, 0, sum)
