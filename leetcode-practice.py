@@ -3595,3 +3595,31 @@ def orangesRotting(grid: List[List[int]]) -> int:
             if grid[i][j] == 1:
                 return -1
     return mins
+
+# Concatenated Words
+# Given list of words, find those which are formed by concatenating other words in list
+#
+# Do DFS for each word. Check if the prefix and suffix of each word is present in given list 
+# Should do dfs again with each prefix and suffix.
+def findAllConcatenatedWordsInADict(words):
+    d = set(words)
+    result = []
+    
+    def dfs(word):
+        for i in range(1, len(word)):
+            prefix = word[:i]
+            suffix = word[i:]
+            
+            if prefix in d and suffix in d:
+                return True
+            if prefix in d and dfs(suffix):
+                return True
+            if suffix in d and dfs(prefix):
+                return True
+        return False
+    
+    for word in words:
+        if dfs(word):
+            result.append(word)
+            
+    return result
