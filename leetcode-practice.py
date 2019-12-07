@@ -3548,4 +3548,50 @@ class Codec:
         root = dfs()                
         return root
 
-
+# Rotten Oranges
+# Given matrix of integers. 1 => fresh , 2=> rotten
+# during every iteration, all neighbors of rotten becomes rotten
+# Return min iterations req for entire board to be rotten
+#
+# Do BFS on array having initial rotten oranges indices
+# Check every neighbor and convert them to rotten, if fresh (1 to 2)
+# while incrementing a count variable, mins
+# After BFS finishes, if there still remains fresh oranges, return -1
+def orangesRotting(grid: List[List[int]]) -> int:
+    R = len(grid)
+    C = len(grid[0])
+    rotten = []
+    
+    for i in range(R):
+        for j in range(C):
+            if grid[i][j] == 2:
+                rotten.append((i, j, 0))
+    
+    mins = 0
+    while rotten:
+        r, c, mins  = rotten.pop(0)
+        
+        # Changing all fresh neighbors to 2
+        # Increment mins when that happen
+        if r > 0 and grid[r-1][c] == 1:
+            grid[r-1][c] = 2
+            rotten.append((r-1,c, mins+1))
+            
+        if r < R - 1 and grid[r+1][c] == 1:
+            grid[r+1][c] = 2
+            rotten.append((r+1, c, mins+1))
+                
+        if c > 0 and grid[r][c-1] == 1:
+            grid[r][c-1] = 2
+            rotten.append((r,c-1,mins+1))
+            
+        if c < C-1 and grid[r][c+1] == 1:
+            grid[r][c+1] = 2
+            rotten.append((r,c+1,mins+1))
+    
+    # If still fresh oranges exist, that means unreachable
+    for i in range(R):
+        for j in range(C):
+            if grid[i][j] == 1:
+                return -1
+    return mins
