@@ -321,6 +321,8 @@ a = [1,1,2,1,1,1,2,3,4,4,4,4,4,4]
 
 
 # strStr()
+# Time complexity ==> O(n*m)
+# n: len of haystack, m: len of needle
 def strStr(haystack, needle):
     i = 0
     while i <= len(haystack) - len(needle):
@@ -2954,7 +2956,10 @@ def ladderLength(beginWord, endWord, wordList):
 
 
 # Find median in data stream
-#
+# Design a data structure that supports the following two operations:
+# void addNum(int num) - Add a integer number from the data stream to the data structure.
+# double findMedian() - Return the median of all elements so far.
+# 
 # Use 2 heaps, min and max heaps 
 # Max stores all smaller nums and min stores all larger nums
 # Always, the difference in num of elements between them shud be 1
@@ -3483,3 +3488,64 @@ class Solution:
             return count
         
         return dfs(root, 0, sum)
+
+
+# Serialize Deserialize binary tree
+class Codec:
+    # Do DFS and if node is leaf, append None
+    # to string else append node.val
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        if not root:
+            return None
+            
+        stack = [root]
+        res = ''
+        while stack:
+            node = stack.pop()
+            if not node:
+                res += "None,"
+            else:
+                res += str(node.val) +","
+                stack.append(node.left)
+                stack.append(node.right)
+                
+        return res
+        
+
+    # Split the string by comma, remove last element as its empty
+    # Do dfs recursively. Pop element from array, see if its None
+    # If not, cast it to a TreeNode and call right and left 
+    # (order matters, not left and right coz stack)
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        if not data:
+            return None
+        
+        data_list = data.split(',')
+        data_list.pop() # Removing last element as its empty
+        
+        def dfs():
+            node = data_list.pop(0)
+            
+            if node == "None":
+                return None
+            
+            treeNode = TreeNode(int(node))
+            treeNode.right = dfs()
+            treeNode.left = dfs()
+            
+            return treeNode
+        
+        root = dfs()                
+        return root
+
+
