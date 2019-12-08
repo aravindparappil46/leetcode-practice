@@ -108,18 +108,18 @@ def lengthOfLongestSubstring(s):
 # Keep a set to keep track of unique elements so far..len(set) will give us length needed
 # If duplicate char found, remove char at i and move i ahead
 def lengthOfLongestSubstring2(s):
-        max_so_far = 0
-        i = j = 0
-        uniques = set()
-        while j < len(s):
-            if s[j] not in uniques:
-                uniques.add(s[j])
-                j += 1
-                max_so_far = max(max_so_far, len(uniques))
-            else:
-                uniques.remove(s[i])
-                i += 1
-        return max_so_far
+    max_so_far = 0
+    i = j = 0
+    uniques = set()
+    while j < len(s):
+        if s[j] not in uniques:
+            uniques.add(s[j])
+            j += 1
+            max_so_far = max(max_so_far, len(uniques))
+        else:
+            uniques.remove(s[i])
+            i += 1
+    return max_so_far
 # print(lengthOfLongestSubstring2("bbbbbam"))
 
 
@@ -143,7 +143,7 @@ def expandFromCenter(s, start, end):
         end += 1
     return s[start+1:end]
 
-# print(longestPalindrome("abxbax"))
+# print(longestPalindrome("applemalayalambox"))
 
 
 # 3 Sum / 3Sum
@@ -3557,7 +3557,7 @@ class Codec:
 # Check every neighbor and convert them to rotten, if fresh (1 to 2)
 # while incrementing a count variable, mins
 # After BFS finishes, if there still remains fresh oranges, return -1
-def orangesRotting(grid: List[List[int]]) -> int:
+def orangesRotting(grid):
     R = len(grid)
     C = len(grid[0])
     rotten = []
@@ -3601,7 +3601,7 @@ def orangesRotting(grid: List[List[int]]) -> int:
 #
 # Do DFS for each word. Check if the prefix and suffix of each word is present in given list 
 # Should do dfs again with each prefix and suffix.
-def findAllConcatenatedWordsInADict(words):
+def findAllConcatenatedWords(words):
     d = set(words)
     result = []
     
