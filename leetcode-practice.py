@@ -3623,3 +3623,41 @@ def findAllConcatenatedWords(words):
             result.append(word)
             
     return result
+
+
+# Maximum Minimum Path
+# Given a matrix, find max score of path from (0,0) to (R-1, C-1)
+# Path's score is the least value in that path
+#
+# Idea is to take the neighbor with highest value (GREEDY APPROACH)
+# Use a heap to get the maximum val neighbor (push negated val coz py default is minheap)
+# Heap keeps track of all neighbors and each time pop out the highest val one
+# Update score by taking min of score and CURRENT POPPED neighbor's val
+#
+# Time Complexity ==> O(MN log MN)
+# Since for each element in matrix we have to do a heap push, 
+# which cost O(log # of element in the heap)
+# Space ==>O(MN)
+def maximumMinimumPath(A]) -> int:
+    grid = A
+    R = len(grid)
+    C = len(grid[0])
+    
+    heap = [(-grid[0][0], 0, 0)]
+    score = grid[0][0]
+    grid[0][0] = -1
+    
+    while heap:
+        val, r, c = heapq.heappop(heap)
+        score = min(-val, score)
+        for nR, nC in [(r+1,c), (r-1,c), (r,c+1), (r,c-1)]:
+            if r == R-1 and c == C-1:
+                return score
+            
+            if nR >= 0 and nR < R and \
+               nC >= 0 and nC < C and \
+               grid[nR][nC] != -1:
+                heapq.heappush(heap, (-grid[nR][nC], nR, nC))
+                grid[nR][nC] = -1
+    
+    return score
