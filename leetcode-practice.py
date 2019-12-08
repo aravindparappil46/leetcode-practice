@@ -101,7 +101,7 @@ def lengthOfLongestSubstring(s):
 
 # print(lengthOfLongestSubstring("bbbbbam"))
 
-# Length of Longest substring without repeating characters
+# Length of Longest substring without repeating characters / unique
 # BETTER VERSION!
 # O(2N) ==> O(n)
 # Keep two ptrs at beginning..increment j till it reaches the end
@@ -358,6 +358,15 @@ def isSameTree(p,q):
     return isSameTree(p.right, q.right) and \
            isSameTree(p.left, q.left)
 
+# Is Subtree
+# Same logic as isSameTree.. Check whether left subtree of one is same as other
+# OR right subtree of one is same as other.
+def isSubtree(p, q):
+    if not p:
+        return False
+    if isSameTree(p,t):
+        return True
+    return isSubtree(p.left, q) or isSubtree(p.right, q)
 
 # Symmetric tree
 """
@@ -1710,7 +1719,6 @@ s = 'a12b56c1a2'
 # Longest palindromic substring
 def longestPalindromicSubstring(s):
     DP = [[False for x in range(len(s))] for y in range(len(s))]
-    
     left = 0
     right = 0
     for i in range(1, len(s)):
