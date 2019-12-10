@@ -146,7 +146,7 @@ def expandFromCenter(s, start, end):
 # print(longestPalindrome("applemalayalambox"))
 
 
-# 3 Sum / 3Sum
+# 3 Sum / 3Sum / Three Sum
 # Time complexity = O(n^2)
 def threeSum(arr, t):
     arr.sort()
@@ -172,6 +172,19 @@ arr = [0,8,1,9,22,2]
 # print(threeSum(arr,9))
 # print(threeSum([-1, 0, 1, 2, -1, -4], -3))
 
+# Four Sum / 4Sum/ 4 sum
+# Same as 3Sum but one more loop with elements 
+#
+def fourSum(nums, target):
+    final = []
+    nums.sort()
+    
+    for i in range(len(nums) - 3):
+        threeResult = self.threeSum(nums[i+1:], target-nums[i])
+        for item in threeResult:
+            if [nums[i]] + item not in final:
+                final.append([nums[i]] + item)
+    return final
 
 # Letter combinations of phone dial
 def letterCombinations(digits):
@@ -359,12 +372,12 @@ def isSameTree(p,q):
            isSameTree(p.left, q.left)
 
 # Is Subtree
-# Same logic as isSameTree.. Check whether left subtree of one is same as other
-# OR right subtree of one is same as other.
+# Same logic as isSameTree.. Check whether left subtree of one is same as entire other
+# OR right subtree of one is same as entire other.
 def isSubtree(p, q):
     if not p:
         return False
-    if isSameTree(p,t):
+    if isSameTree(p,q):
         return True
     return isSubtree(p.left, q) or isSubtree(p.right, q)
 
@@ -1876,7 +1889,7 @@ def populateNextRightPointer(root):
             return None
         
         queue = [root]
-        o = []
+        
         levels=[]
         level = 0
 
@@ -1969,6 +1982,7 @@ def addTwoNumbers(l1, l2):
 # Doubly linked list and hashmap
 # hashmap stores key and value will be the whole node in LL
 # Doubly linked list coz we can delete in O(1) without traversing whole LL
+# Adding and deleting is O(1) Time Complexity
 class Node:
     def __init__(self,k, v):
         self.key = k
@@ -2862,8 +2876,8 @@ def canAttendMeetings(intervals):
 
 def prisonAfterNDays(self, cells, N: int):
     history = {}
+
     while N:
-        
         toOccupy = []
         toVacate = []
         history[str(cells)] = N
