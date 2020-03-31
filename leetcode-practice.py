@@ -3420,7 +3420,7 @@ class Solution:
 # When closing bracket seen, pop till we reach an operator & keep adding to num
 # Afterwards, just call eval function with that num and op
 class BasicCalculatorIII:
-    def calculate(self, s: str) -> int:
+    def calculate(self, s):
         s = re.sub(" ", "", s)
             
         stack = []
@@ -3683,3 +3683,58 @@ def maximumMinimumPath(A]) -> int:
                 grid[nR][nC] = -1
     
     return score
+
+# Minimum Operations
+# Visa interview question
+# Given array, return min # of insert+deletes
+# or getting sorted array
+# An operation is deleting an element, adding the required
+# element and then adding back the deleted elements
+#
+# Ex. [2,12,13,9,10,15]
+# step 1. [2] -- insert 2
+# step 2. [2,12] -- insert 12
+# step 3. [2,12,13] -- insert 13
+# step 4. [2,9,12,13] -- remove 2, add 9, add 2
+# and so on
+
+def minimumOperations(arr):
+    new = [arr[0]]
+    count = 1
+    if arr[1] < arr[0]:
+        new.insert(0,arr[1])
+    elif arr[1] > arr[0]:
+        new.append(arr[1])
+    count += 1 
+
+    for e in arr[2:]:
+        where = bestPlace(new, e)
+        if where == 0:
+            count += 1
+        elif where == 1:
+            count += 3
+        elif where == len(new):
+            count += 1
+        elif where == len(new)-1:
+            count += 3
+        else:
+            count += countMid(new, where, e)
+
+        new.insert(where,e)
+    return count
+
+def bestPlace(arr, e):
+    return len([x for x in arr if x<e])
+
+def countMid(arr,where,e):
+    left = arr[:where]
+    right = arr[where:]
+    leftCount = 2*len(left) + 1
+    rightCount = 2*len(right) + 1
+
+    if leftCount < rightCount:
+        return leftCount
+    else:
+        return rightCount
+
+arr = [2,12,13,9,10,15]
