@@ -979,12 +979,15 @@ root.left.right = TreeNode(3)
 def moveZeroesToEnd(arr):
     count = 0
     for i in range(len(arr)):
+        # print("Before", arr)
         if arr[i] != 0:
             arr[i], arr[count] = arr[count], arr[i]
             count+=1
+        # print("Afterr",arr,"i",i," c", count)
     return arr
 
-arr = [1, 2, 7, 0, 8, 6, 3, 0, 8, 87, 1, 2, 0, 2, 0, 2, 0, 0]
+arr = [1,2,3,0,1,0,3]
+# arr = [1, 2, 7, 0, 8, 6, 3, 0, 8, 87, 1, 2, 0, 2, 0, 2, 0, 0]
 # print(moveZeroesToEnd(arr))
 
 
@@ -3660,7 +3663,7 @@ def findAllConcatenatedWords(words):
 # Since for each element in matrix we have to do a heap push, 
 # which cost O(log # of element in the heap)
 # Space ==>O(MN)
-def maximumMinimumPath(A]) -> int:
+def maximumMinimumPath(A) -> int:
     grid = A
     R = len(grid)
     C = len(grid[0])
@@ -3738,3 +3741,67 @@ def countMid(arr,where,e):
         return rightCount
 
 arr = [2,12,13,9,10,15]
+
+
+# 1304. Find N Unique Integers Sum up to Zero
+# Given n, create an array of n elem. Sum is 0
+#
+# Add all nums in sequence till n-1, then add -sumSoFar
+def sumZero(n):
+    arr = []
+    sum = 0
+    for i in range(n-1):
+        arr.append(i)
+        sum += i
+
+    arr.append(-sum)
+    return arr
+
+n = 5
+# print(sumZero(n))
+
+# 75. Sort Colors
+# Given array of 0s, 1 and 2s, order them such that 
+# it looks like [0,0,1,1,2,2] ==> [red, white, blue]
+# Dutch Flag partitioning (think of boundaries of colors)
+def sortColors(self, nums) -> None:
+    red = 0
+    white = 0
+    blue = len(nums) - 1
+
+    while white <= blue:
+        if nums[white] == 0: # 0 is red
+            nums[white], nums[red] = nums[red], nums[white]
+            white += 1
+            red += 1
+        
+        elif nums[white] == 1: # 1 is white
+            white += 1
+        
+        else:
+            nums[blue], nums[white] = nums[white], nums[blue]
+            blue -= 1
+
+# 134. Gas Station
+# N Gas stations in circular route
+# You can refill full tank from station A (gas array)
+# and it costs some amount to move to next station (costs array)
+# Find which gas station we should start from with empty tank
+# to complete a tour
+def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+    surplus = 0 
+    deficit = 0
+    start = 0
+    
+    # If surplus is negative, this index can't start a tour
+    # So move to the next index while keeping track of how much 
+    # petrol should have been needed till this point (deficit)
+    for i in range(len(gas)):
+        surplus += gas[i] - cost[i]
+        if surplus < 0:
+            deficit += surplus
+            start = i + 1
+            surplus = 0
+        
+    return start if surplus + deficit >= 0 else -1
+
