@@ -3764,7 +3764,7 @@ n = 5
 # Given array of 0s, 1 and 2s, order them such that 
 # it looks like [0,0,1,1,2,2] ==> [red, white, blue]
 # Dutch Flag partitioning (think of boundaries of colors)
-def sortColors(self, nums) -> None:
+def sortColors(nums) -> None:
     red = 0
     white = 0
     blue = len(nums) - 1
@@ -3788,7 +3788,7 @@ def sortColors(self, nums) -> None:
 # and it costs some amount to move to next station (costs array)
 # Find which gas station we should start from with empty tank
 # to complete a tour
-def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+def canCompleteCircuit(gas, cost) -> int:
     surplus = 0 
     deficit = 0
     start = 0
@@ -3805,3 +3805,42 @@ def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
         
     return start if surplus + deficit >= 0 else -1
 
+# 909. Snake and Ladders
+"""
+    Do BFS with (label, num of steps)
+    We convert a label to its resp (r,c)
+    Check if there's a snake/ladder at (r,c), if yes, label changes to val at (r,c)
+    Stop and return steps if label reaches N*N 
+    Else, we need to consider all possibilites of die throws (6 sides always)
+    So do label + <1,2,3,4,5,6> to get new label. 
+    If new_label is unseen, add to queue and continue BFS
+"""
+def snakesAndLadders(self, board: List[List[int]]) -> int:
+    seen = set()
+    queue = [(1,0)]
+    N = len(board[0])
+    
+    while queue:
+        label, steps = queue.pop(0)
+        row, col = self.convertToPosition(label, N)
+       
+        if board[row][col] != -1:
+            label = board[row][col]
+            
+        if label == N*N:
+            return steps
+        
+        for i in range(1,7):
+            new_label = label + i
+            if new_label not in seen:
+                seen.add(new_label)
+                queue.append((new_label,steps+1))
+    return -1
+
+def convertToPosition(self,label, N):
+    row = (label-1) // N
+    col = (label-1) % N
+    if row % 2 == 0:
+        return N-1-row, col
+    else:
+        return N-1-row, N-1-col
