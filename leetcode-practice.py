@@ -3815,14 +3815,14 @@ def canCompleteCircuit(gas, cost) -> int:
     So do label + <1,2,3,4,5,6> to get new label. 
     If new_label is unseen, add to queue and continue BFS
 """
-def snakesAndLadders(self, board: List[List[int]]) -> int:
+def snakesAndLadders(board) -> int:
     seen = set()
     queue = [(1,0)]
     N = len(board[0])
     
     while queue:
         label, steps = queue.pop(0)
-        row, col = self.convertToPosition(label, N)
+        row, col = convertToPosition(label, N)
        
         if board[row][col] != -1:
             label = board[row][col]
@@ -3837,10 +3837,48 @@ def snakesAndLadders(self, board: List[List[int]]) -> int:
                 queue.append((new_label,steps+1))
     return -1
 
-def convertToPosition(self,label, N):
-    row = (label-1) // N
+def convertToPosition(label, N):
+    row = (label-1) // N # this just works :/
     col = (label-1) % N
-    if row % 2 == 0:
+    if row % 2 == 0:     # Need this coz rows alternate in the board
         return N-1-row, col
     else:
         return N-1-row, N-1-col
+
+
+# 1185. Day of the week
+# Keep first day of days Array as a known day (i.e., today's day)
+# Count how many days has past since today
+# Count how many days have passed since given date
+# Subtract them and use circular indexing to find day
+# Need to add leap days also
+def dayOfTheWeek(self, day: int, month: int, year: int) -> str:
+    dayWord = ["Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"]
+    
+    numDaysTillToday = countDaysPastSince(2,4,2020)
+    numDaysTillGivenDate = countDaysPastSince(day, month, year)
+    
+    diff = numDaysTillGivenDate - numDaysTillToday
+    
+    return dayWord[diff % len(dayWord)] # circular indexing
+
+def countDaysPastSince(day, month, year):
+    months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    # --- Change Year to Days ------ #
+    yearsInDays = 0
+    
+    # Check leap year and add 1. Always add 365
+    for y in range(year - 1, 1970, -1):
+        yearsInDays += 365 + containsLeapDay(y)
+    
+    # --- Change Month to Days ------ #
+    daysInMonthsSinceNow = months[:month-1]
+    monthsInDays = sum(daysInMonthsSinceNow)
+    if month > 2: monthsInDays += containsLeapDay(year)
+    
+    # Total days
+    return yearsInDays + monthsInDays + day
+
+def containsLeapDay(year):
+    return 1 if (year % 4 == 0 and year % 100 != 0) or year % 400 == 0 else 0
