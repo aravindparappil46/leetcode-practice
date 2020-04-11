@@ -3852,7 +3852,7 @@ def convertToPosition(label, N):
 # Count how many days have passed since given date
 # Subtract them and use circular indexing to find day
 # Need to add leap days also
-def dayOfTheWeek(self, day: int, month: int, year: int) -> str:
+def dayOfTheWeek(day, month, year):
     dayWord = ["Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"]
     
     numDaysTillToday = countDaysPastSince(2,4,2020)
@@ -3882,3 +3882,64 @@ def countDaysPastSince(day, month, year):
 
 def containsLeapDay(year):
     return 1 if (year % 4 == 0 and year % 100 != 0) or year % 400 == 0 else 0
+
+
+"""
+1236. Web Crawler
+Do DFS with initial url and keep adding all
+child urls to stack if hostname matches
+
+htmlParser.getUrls(url) will return aall the crawled URLs
+Some of them will have different hostname. Filter them out 
+Ex. startUrl = "http://news.yahoo.com/news/topics"
+""" 
+def crawl(startUrl: str, htmlParser: 'HtmlParser'):
+    hostname = startUrl[:startUrl.find("/",7)] # 7 is where the // ends
+    seen = set()
+    seen.add(startUrl)
+    stack = [startUrl]
+    
+    while stack:
+        url = stack.pop()
+        for crawl_url in htmlParser.getUrls(url):
+            if hostname in crawl_url and crawl_url not in seen :
+                stack.append(crawl_url)
+                seen.add(crawl_url)
+    return seen
+
+# 722. Remove Comments
+# Go through each line (element) in array
+# Go through each character in each line
+# If charAt(i) is / and charAt(i+1) is //, move i 
+# to end of line (we will be skipping whole line)
+# Do same for /*block comments*/ too
+# Keep a temp string which adds all chars so far in curr line
+# Once done, append temp to res array 
+def removeComments(source):
+    o = []
+    blkComment = False
+    temp = ""
+    
+    for line in source:
+        i = 0
+        n = len(line)
+        
+        while i < n:
+            c = line[i]  
+            if c == "/" and i+1 < n and line[i+1] == "/" and not blkComment:
+                i = n
+            elif c == "/" and i+1 < n and line[i+1] == "*" and not blkComment:                  
+                blkComment = True
+                i+=1
+            elif c == "*" and i+1 < n and line[i+1] == "/" and blkComment:
+                blkComment = False
+                i+=1
+            elif not blkComment:
+                temp += c
+            i+=1         
+    
+        if not blkComment and temp:
+            o.append(temp)
+            temp = '' # Can't put this at the top as curr str gets overwritten
+    
+    return o
