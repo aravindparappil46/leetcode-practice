@@ -3943,3 +3943,112 @@ def removeComments(source):
             temp = '' # Can't put this at the top as curr str gets overwritten
     
     return o
+
+# 54. Spiral Matrix spiralMatrix
+# Iterate over  matrix in spiral fashion
+# Keep two arrays of directions - for R and C
+# Loop till R*C. newR will be currRow + one from dir array
+# If its within bounds, make newR as currRow
+# If not, hit a boundary, so should make a clockwise turn using % 4
+def spiralOrder(matrix):
+    if not matrix:
+        return []
+    R = len(matrix)
+    C = len(matrix[0])
+    seen = [[False] * C for _ in matrix]
+    dR = [0,1,0,-1]
+    dC = [1,0,-1,0]
+    r = 0
+    c = 0
+    idx = 0
+    loopCounter = 0
+    res = []
+    
+    while loopCounter < R*C:
+        res.append(matrix[r][c])
+        seen[r][c] = True
+        newR = r + dR[idx]
+        newC = c + dC[idx]
+        if 0 <= newR < R and 0 <= newC < C and not seen[newR][newC]:
+            r = newR
+            c = newC
+        else:
+            idx = (idx + 1) % 4 # clockwise turn
+            r = r + dR[idx]
+            c = c + dC[idx]
+        
+        loopCounter += 1
+    
+    return res
+
+# 468. Validate IP Address
+# Just use Divide and conquer
+# to check for various conditions that make
+# IPv4 or IPv6 invalid
+def validIPAddress(IP):
+    isIPv4 = isIPv6 = False
+    if IP.count('.') == 3:
+        isIPv4 = checkIfIPv4(IP)
+    elif IP.count(':') == 7:
+        isIPv6 = checkIfIPv6(IP)
+    
+    if isIPv4:
+        return "IPv4"
+    elif isIPv6:
+        return "IPv6"
+    else:
+        return "Neither"
+    
+def checkIfIPv4(IP):
+    segments = IP.split('.')
+    checkIfAnyEmpty = all(num for num in segments)
+    if not checkIfAnyEmpty:
+        return False
+
+    for num in segments:
+        if num[0] == '0' and len(num) > 1:
+            return False
+        for char in num:
+            if not char.isdigit():
+                return False
+        if int(num) > 255:
+            return False
+        
+    return True
+
+def checkIfIPv6(IP):
+    segments = IP.split(':')
+    checkIfAnyEmpty = all(num for num in segments)
+    if not checkIfAnyEmpty:
+        return False
+
+    validHexChars = "0123456789abcdef"
+    for num in segments:
+        if len(num) > 4:
+            return False
+        for char in num:
+            if char.lower() not in validHexChars:
+                return False
+    return True
+
+"""
+105. Construct Binary Tree from Preorder and Inorder Traversal
+First node in preorder will always be root
+Find that node in inorder
+  - Whatever is to its left is that root's left subtree
+  - Whatever is to its right is that root's right subtree
+ Repeat this recursively
+ Given preorder and inorder Lists of TreeNodes
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+"""
+def buildTree(preorder, inorder):
+    if inorder:
+        idx = inorder.index(preorder.pop(0))
+        root = TreeNode(inorder[idx])
+        root.left = self.buildTree(preorder, inorder[0:idx])
+        root.right = self.buildTree(preorder, inorder[idx+1:])
+        return root
