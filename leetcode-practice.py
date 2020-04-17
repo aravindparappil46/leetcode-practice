@@ -4037,8 +4037,8 @@ First node in preorder will always be root
 Find that node in inorder
   - Whatever is to its left is that root's left subtree
   - Whatever is to its right is that root's right subtree
- Repeat this recursively
- Given preorder and inorder Lists of TreeNodes
+Repeat this recursively
+Given preorder and inorder Lists of TreeNodes
 # class TreeNode:
 #     def __init__(self, x):
 #         self.val = x
@@ -4046,9 +4046,48 @@ Find that node in inorder
 #         self.right = None
 """
 def buildTree(preorder, inorder):
-    if inorder:
+    if inorder: # inorder reduces in size coz of recursive calls
         idx = inorder.index(preorder.pop(0))
         root = TreeNode(inorder[idx])
         root.left = self.buildTree(preorder, inorder[0:idx])
         root.right = self.buildTree(preorder, inorder[idx+1:])
         return root
+
+# 457. Circular Array Loop
+# Given array, check if there is a cycle in it in same dir
+# i.e., you can't go front and back in same loop
+# The cycle should be of len > 1
+def circularArrayLoop(nums):
+    n = len(nums)
+    
+    for i, num in enumerate(nums):
+        length = 0
+        j = i # for temp purposes
+        isForward = num > 0
+        while True:
+            next = (j + nums[j]) % n # circular indexing
+            isNextForward = nums[next] > 0
+            # the next element is of opposite sign
+            if isNextForward != isForward:
+                break
+            # not a real cycle. Go to next num
+            if next == j:
+                break 
+            # Next is back to initial index
+            if next == i:
+                if length >= 1: # >= because len is ++ only at the end
+                    return True
+                else:
+                    break
+            # we circled the array & crossed our initial point.
+            # Should skip and go to next num to avoid infinite loop
+            if length > n: 
+                break
+            
+            j = next
+            length += 1
+            
+    return False
+                    
+                    
+                
