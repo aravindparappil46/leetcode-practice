@@ -3847,6 +3847,7 @@ def convertToPosition(label, N):
 
 
 # 1185. Day of the week
+#
 # Keep first day of days Array as a known day (i.e., today's day)
 # Count how many days has past since today
 # Count how many days have passed since given date
@@ -3886,6 +3887,7 @@ def containsLeapDay(year):
 
 """
 1236. Web Crawler
+
 Do DFS with initial url and keep adding all
 child urls to stack if hostname matches
 
@@ -3908,6 +3910,7 @@ def crawl(startUrl: str, htmlParser: 'HtmlParser'):
     return seen
 
 # 722. Remove Comments
+#
 # Go through each line (element) in array
 # Go through each character in each line
 # If charAt(i) is / and charAt(i+1) is //, move i 
@@ -3945,6 +3948,7 @@ def removeComments(source):
     return o
 
 # 54. Spiral Matrix spiralMatrix
+#
 # Iterate over  matrix in spiral fashion
 # Keep two arrays of directions - for R and C
 # Loop till R*C. newR will be currRow + one from dir array
@@ -3982,6 +3986,7 @@ def spiralOrder(matrix):
     return res
 
 # 468. Validate IP Address
+#
 # Just use Divide and conquer
 # to check for various conditions that make
 # IPv4 or IPv6 invalid
@@ -4033,6 +4038,7 @@ def checkIfIPv6(IP):
 
 """
 105. Construct Binary Tree from Preorder and Inorder Traversal
+
 First node in preorder will always be root
 Find that node in inorder
   - Whatever is to its left is that root's left subtree
@@ -4054,6 +4060,7 @@ def buildTree(preorder, inorder):
         return root
 
 # 457. Circular Array Loop
+#
 # Given array, check if there is a cycle in it in same dir
 # i.e., you can't go front and back in same loop
 # The cycle should be of len > 1
@@ -4088,6 +4095,59 @@ def circularArrayLoop(nums):
             length += 1
             
     return False
-                    
-                    
-                
+
+# 535. Encode and Decode TinyURL
+#
+# Use Fixed Length Variable Encoding
+# Generate a random string of len 6
+# Best probability to avoids collisions (more than hashcode)
+# Better than a random number coz size is limited to INT_MAX
+# Can increase range by increase len from 6 to something greater
+class Codec:
+    def __init__(self):
+        self.d = {}
+
+    def encode(self, longUrl):
+        chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        key = ""
+
+        for i in range(6):
+            randIndex = random.randint(0,61)
+            randChar = chars[randIndex] # between 0 and 60
+            key += randChar
+        
+        self.d[key] = longUrl
+        return "http://tinyurl.com/" + key
+            
+    def decode(self, shortUrl):
+        key = shortUrl.replace("http://tinyurl.com/","")
+        return self.d[key]
+
+                           
+# 179. Largest Number
+# Given array of nums, return largest num that can be made
+# [10,2] ==> '210'
+#
+# Slow fast pointer approach i = 0 & j = i+1
+# Get the two nums which are formed by concat of i+j and j+i
+# If j+1 num is greater, swap the original elements of array at i & j
+# This shud go on till j reaches end of array
+# At end of j loop, the element at i will be fixed permanently, increment i
+#
+# Time Complexity : O(len of longest string + nlogn)
+# nlogn for sorting
+# len of longest string coz we are comparing using num_ji > num_ij
+ def largestNumber(nums):
+    i = 0
+    j = i + 1
+    n = len(nums)
+    for i in range(n):
+        for j in range(i+1,n):
+            num_ij = str(nums[i]) + str(nums[j])
+            num_ji = str(nums[j]) + str(nums[i])
+            if num_ji > num_ij:
+                nums[i], nums[j] = nums[j], nums[i]
+    
+    if nums[0] == 0: # Edge case in LC, if first digit is 0
+        return '0'
+    return ''.join(map(str,nums))

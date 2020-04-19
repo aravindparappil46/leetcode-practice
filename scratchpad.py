@@ -8,5 +8,9 @@ from collections import deque
 # arr = [2,19,10,1,6,13,6,6,15,12]
 source = ["/*Test program */", "int main()", "{ ", "  // variable declaration ", "int a, b, c;", "/* This is a test", "   multiline  ", "   comment for ", "   testing */", "a = b + c;", "}"]
 
-s = 'abcdcF'
-print(s.lower())
+s = [10,1]
+temp = ''
+temp = "".join(map(str,s))
+print(temp)
+
+print('23' < '66')
