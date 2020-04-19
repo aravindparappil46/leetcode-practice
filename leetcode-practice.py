@@ -2364,6 +2364,46 @@ def nextGreaterElements2(nums):
         o.append(v)
     return o
 
+
+# 556. Next Greater Element III
+# Given just an integer, find its next greater element
+# It should be within 32 bit range
+# Convert the int to a list of chars
+def nextGreaterElement3(n):
+    nums = list(str(n)) # Have to make str coz looping needed
+    valueAtDip = '0'
+    idxOfDip = swapperIdx = 0
+    
+    # Traverse from right most index and
+    # finding the first occurrence where 
+    # number is smaller than previous num
+    # e.g. [1,2,3,4] => first occurence is 3 
+    # Note the idx and the value
+    for i in range(len(nums)-1, -1, -1):
+        if nums[i-1] < nums[i]:
+            idxOfDip = i-1
+            valueAtDip = nums[i-1]
+            break
+    
+    # Again, traverse from right most idx
+    # but find the first value > valueAtDip
+    for i in range(len(nums)-1, -1, -1):
+        if nums[i] > valueAtDip:
+            swapperIdx = i
+            break
+    
+    # Swap those two values in original array
+    nums[idxOfDip], nums[swapperIdx] = nums[swapperIdx], nums[idxOfDip]
+
+    # Now, reverse the digits to the right of idxAtDip
+    nums[idxOfDip+1:] = nums[idxOfDip+1:][::-1]
+    
+    res = int(''.join(nums))
+    isResInt32 = res.bit_length() <= 31
+    
+    return -1 if res <= n or not isResInt32 else res
+
+
 # 29. Copy list with random ptr pointer
 #
 # Keep a dict that tracks old node --> new node
@@ -4137,7 +4177,7 @@ class Codec:
 # Time Complexity : O(len of longest string + nlogn)
 # nlogn for sorting
 # len of longest string coz we are comparing using num_ji > num_ij
- def largestNumber(nums):
+def largestNumber(nums):
     i = 0
     j = i + 1
     n = len(nums)
@@ -4151,3 +4191,44 @@ class Codec:
     if nums[0] == 0: # Edge case in LC, if first digit is 0
         return '0'
     return ''.join(map(str,nums))
+
+
+# 1116. Print Zero Even Odd
+#
+# Given 3 funcs to print zero's, even nums and odd nums
+# Print the pattern 0102030405 according to value of n 
+# Provided the same instance obj is passed to 3 diff threads
+#
+# Use Semaphore to acquire and release locks 
+# In even & odd, release zero semaphore after printing
+# In zero, release even & odd semaphore based on i % 2 of loop
+from threading import Semaphore
+class ZeroEvenOdd:
+    def __init__(self, n):
+        self.n = n
+        self.zSema = Semaphore(1)
+        self.eSema = Semaphore(0)
+        self.oSema = Semaphore(0)
+        
+    # printNumber(x) outputs "x", where x is an integer.
+    def zero(self, printNumber: 'Callable[[int], None]') -> None:
+        for i in range(self.n):
+            self.zSema.acquire()
+            printNumber(0)
+            if i % 2:
+                self.eSema.release()
+            else:
+                self.oSema.release()
+        
+    def even(self, printNumber: 'Callable[[int], None]') -> None:
+        for i in range(2, self.n+1, 2):
+            self.eSema.acquire()
+            printNumber(i)
+            self.zSema.release()
+        
+    def odd(self, printNumber: 'Callable[[int], None]') -> None:
+        for i in range(1, self.n+1, 2):
+            self.oSema.acquire()
+            printNumber(i)
+            self.zSema.release()
+        
