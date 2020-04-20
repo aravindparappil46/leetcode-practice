@@ -4231,4 +4231,33 @@ class ZeroEvenOdd:
             self.oSema.acquire()
             printNumber(i)
             self.zSema.release()
-        
+
+# 688. Knight Probability in Chessboard
+# Find probability that knight remains on board after K steps on an NxN board
+#
+# Use DFS with memoization 
+# Keep a moves array with all possible dirs (there will be 8)
+# Probability for any particular move will be 1/8
+# Time Complexity => O(K*N^2)
+def knightProbability(N, K, r, c):
+    moves = [(-1, -2), (-2, -1), (-2, 1), (-1, 2), (1, 2), (2, 1), (2, -1), (1, -2)]
+    seen = {}
+
+    def dfs(k,r,c,P): # k is steps so far, P is cumulative Probability
+        tempProb = 0
+        if 0 <= r < N and 0 <= c < N: # knight still in board
+            if k < K: 
+                for dx,dy in moves:
+                    newR = r + dx
+                    newC = c + dy
+                    if (newR, newC, k+1) not in seen: # memoization
+                        seen[(newR, newC, k+1)] = dfs(k + 1, newR, newC, P / 8)
+                    tempProb += seen[(newR, newC, k+1)] # update prob
+                        
+            else: # Required num of steps reached
+                tempProb = P
+        return tempProb
+    
+    return dfs(0, r, c, 1) # 0 num of steps initially, with prob as 1.0
+
+
