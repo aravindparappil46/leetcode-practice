@@ -4261,3 +4261,18 @@ def knightProbability(N, K, r, c):
     return dfs(0, r, c, 1) # 0 num of steps initially, with prob as 1.0
 
 
+# iHealth Labs test
+# 
+#
+#
+#
+def avgK(nums):
+    c = 0
+    for start in range(0, len(nums)):
+        sum = 0
+        for end in range(start, len(nums)):
+            sum += nums[end]
+            avg = sum/len(nums[start:end+1])
+            if avg == k:
+                c+=1
+    return c
