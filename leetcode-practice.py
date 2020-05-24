@@ -4170,7 +4170,7 @@ class Codec:
 #
 # Slow fast pointer approach i = 0 & j = i+1
 # Get the two nums which are formed by concat of i+j and j+i
-# If j+1 num is greater, swap the original elements of array at i & j
+# If j+i num is greater, swap the original elements of array at i & j
 # This shud go on till j reaches end of array
 # At end of j loop, the element at i will be fixed permanently, increment i
 #
@@ -4304,3 +4304,32 @@ def countBattleships(board: List[List[str]]):
                 count += 1
     
     return count
+
+"""
+702. Search in a Sorted Array of Unknown Size
+Given array, search for target using the reader interface
+ex. reader.get(i) == target
+
+Constraint is all are integers (positive and neg) but < 10,000
+Do binary search with this as right bound
+
+Time: O(logN)
+Space: O(1)
+"""
+def searchInSortedArrayUnknownSize(reader, target):
+    start = 0
+    end = 9999 # All integers less than 10,000
+    
+    while start < end:
+        mid = start + (end - start) // 2; # saves time
+        v = reader.get(mid);
+        if v == target:
+            return mid
+        elif v > target:
+            end = mid - 1
+        else:
+            start = mid + 1
+    
+    # Have to return start because of our mid logic
+    return start if reader.get(start) == target else -1
+        
