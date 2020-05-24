@@ -2178,7 +2178,7 @@ def mergeInPlace(nums1, nums2):
 
     nums1[:j+1] = nums2[:j+1]
 
-# Merge 2 lists
+# Merge 2 lists / merge 2 sorted lists
 # Keep a dummy so that we can return dummy.next
 # Iterate over l1 and l2 and pick smallest one to be assigned to prev
 def mergeTwoLists(l1: ListNode, l2: ListNode) :
@@ -4263,10 +4263,9 @@ def knightProbability(N, K, r, c):
 
 # iHealth Labs test
 # 
-#
-#
-#
-def avgK(nums):
+# Given list of nums & k, find count of 
+# contiguous nums whose avg is k
+def avgK(nums, k):
     c = 0
     for start in range(0, len(nums)):
         sum = 0
@@ -4276,3 +4275,32 @@ def avgK(nums):
             if avg == k:
                 c+=1
     return c
+
+# 419. Battleships in a Board
+# Given board of X and ., count how many battle ships are there
+# Ships can only be placed horizontally or vertically
+"""
+Example:
+X..X
+...X
+...X
+Only TWO battleships in this
+
+We should only count the cells which is the starting point
+of a battleship i.e., it won't have X to its left or above
+
+Time : O(r*c)
+Space: O(1)
+"""
+def countBattleships(board: List[List[str]]):
+    r = len(board)
+    c = len(board[0])
+    count = 0
+    for i in range(r):
+        for j in range(c):
+            if board[i][j] == 'X':
+                if i > 0 and board[i-1][j] == 'X': continue
+                if j > 0 and board[i][j-1] == "X": continue
+                count += 1
+    
+    return count
